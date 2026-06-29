@@ -301,6 +301,34 @@ function initAIAssistantPage() {
     const langSelect = document.getElementById('lang-select');
     const modeBtns = document.querySelectorAll('.chat-mode-btn');
     
+    // Handle API Key Input
+    const apiKeyInput = document.getElementById('api-key-input');
+    const saveKeyBtn = document.getElementById('save-key-btn');
+    const keyStatus = document.getElementById('key-status');
+    
+    if (apiKeyInput && saveKeyBtn && keyStatus) {
+        // Load saved key
+        const savedKey = localStorage.getItem('gemini_api_key');
+        if (savedKey) {
+            apiKeyInput.value = savedKey;
+            keyStatus.textContent = 'Key saved locally (active)';
+            keyStatus.style.color = 'var(--secondary-color)';
+        }
+        
+        saveKeyBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem('gemini_api_key', key);
+                keyStatus.textContent = 'Key saved successfully!';
+                keyStatus.style.color = 'var(--secondary-color)';
+            } else {
+                localStorage.removeItem('gemini_api_key');
+                keyStatus.textContent = 'Key removed.';
+                keyStatus.style.color = 'var(--accent-color)';
+            }
+        });
+    }
+    
     // Toggle Modes
     modeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -329,10 +357,8 @@ function initAIAssistantPage() {
         
         logAgent('frontend', 'User message captured. Dispatching to AI analysis pipeline.');
         
-        // Simulate AI Processing
-        setTimeout(() => {
-            processAIResponse(text, langSelect.value);
-        }, 1000);
+        // Process response
+        processAIResponse(text, langSelect.value);
     };
     
     sendBtn.addEventListener('click', sendMessage);
@@ -385,7 +411,7 @@ function addBotMessage(text) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Symptom Checker Database
+// Symptom Checker Database (Fallback)
 const symptomsDatabase = {
     fever: {
         en: "Based on your symptom of fever, you might have a viral infection or Influenza. Do you also have a cough or body aches?",
@@ -409,55 +435,196 @@ const symptomsDatabase = {
 
 function processAIResponse(inputText, lang) {
     logAgent('ceo', `AI Engine parsing query: "${inputText}"`);
-    const textLower = inputText.toLowerCase();
     
+    showTypingIndicator();
+    
+    // Try Serverless API first
+    fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: inputText,
+            mode: aiMode,
+            language: lang
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Serverless function failed or not found');
+        return res.json();
+    })
+    .then(data => {
+        hideTypingIndicator();
+        addBotMessage(formatMarkdown(data.reply));
+    })
+    .catch(err => {
+        // Fallback to local API Key if available
+        const localKey = localStorage.getItem('gemini_api_key');
+        if (localKey) {
+            callGeminiDirectly(inputText, lang, localKey);
+        } else {
+            hideTypingIndicator();
+            const explanation = {
+                en: `<strong>Aurevica AI is in offline mode.</strong><br>
+                     To enable fully functional AI responses:<br>
+                     1. Set the <code>GEMINI_API_KEY</code> environment variable on Vercel, or<br>
+                     2. Enter your Gemini API Key in the sidebar to run it directly in your browser.<br><br>
+                     <em>(Offline Fallback Response):</em><br>`,
+                hi: `<strong>ऑरेविका एआई ऑफलाइन मोड में है।</strong><br>
+                     पूर्ण रूप से कार्यात्मक एआई प्रतिक्रियाओं को सक्षम करने के लिए:<br>
+                     1. वर्सेल (Vercel) पर <code>GEMINI_API_KEY</code> वातावरण चर सेट करें, या<br>
+                     2. सीधे अपने ब्राउज़र में चलाने के लिए साइडबार में अपनी जेमिनी एपीआई कुंजी (Gemini API Key) दर्ज करें।<br><br>
+                     <em>(ऑफलाइन फ़ॉलबैक प्रतिक्रिया):</em><br>`,
+                es: `<strong>Aurevica AI está en modo fuera de línea.</strong><br>
+                     Para habilitar respuestas de IA completamente funcionales:<br>
+                     1. Configure la variable de entorno <code>GEMINI_API_KEY</code> en Vercel, o<br>
+                     2. Ingrese su clave API de Gemini en la barra lateral para ejecutarla directamente en su navegador.<br><br>
+                     <em>(Respuesta de respaldo fuera de línea):</em><br>`,
+                ja: `<strong>Aurevica AI はオフラインモードです。</strong><br>
+                     完全に機能するAI応答を有効にするには：<br>
+                     1. Vercelで <code>GEMINI_API_KEY</code> 環境変数を設定するか、<br>
+                     2. サイドバーにGemini APIキーを入力して、ブラウザで直接実行します。<br><br>
+                     <em>(オフラインフォールバック応答):</em><br>`
+            };
+            
+            let offlineResponse = getOfflineResponse(inputText, lang);
+            addBotMessage(explanation[lang] + offlineResponse);
+        }
+    });
+}
+
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('chat-messages');
+    hideTypingIndicator();
+    
+    const msgHTML = `
+        <div class="chat-msg bot" id="typing-indicator" style="opacity: 0.7;">
+            <div class="chat-avatar">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <div class="msg-bubble" style="display: flex; gap: 6px; align-items: center; padding: 12px 16px;">
+                <span class="typing-dot" style="width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; display: inline-block; animation: bounce 1s infinite 0.1s;"></span>
+                <span class="typing-dot" style="width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; display: inline-block; animation: bounce 1s infinite 0.2s;"></span>
+                <span class="typing-dot" style="width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; display: inline-block; animation: bounce 1s infinite 0.3s;"></span>
+            </div>
+        </div>
+    `;
+    messagesContainer.insertAdjacentHTML('beforeend', msgHTML);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// Keyframes CSS is injected globally in style.css or we can handle it via animation
+function hideTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+}
+
+function callGeminiDirectly(inputText, lang, apiKey) {
+    let systemPrompt = '';
     if (aiMode === 'symptoms') {
-        let matched = false;
+        systemPrompt = `You are Aurevica Lumina's Clinical AI Assistant, a highly knowledgeable and compassionate medical AI. 
+Analyze the user's symptoms, suggest potential causes, and recommend next steps or home remedies if appropriate. 
+Always include a prominent, professional medical disclaimer stating that this is for informational purposes only, not a substitute for professional medical advice, diagnosis, or treatment, and they should consult a doctor. 
+Keep the response structured and easy to read. 
+Respond in the following language: ${lang}.`;
+    } else {
+        systemPrompt = `You are Aurevica Lumina's AI Diet Planner, an expert clinical nutritionist. 
+Based on the user's goal or symptoms, create a customized, healthy daily meal plan (Breakfast, Lunch, Snack, Dinner) and provide actionable nutritional advice. 
+Format the response clearly with bullet points and bold headers. 
+Respond in the following language: ${lang}.`;
+    }
+    
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{
+                    text: `${systemPrompt}\n\nUser Query: ${inputText}`
+                }]
+            }]
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Gemini API call failed');
+        return res.json();
+    })
+    .then(data => {
+        hideTypingIndicator();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from AI.';
+        addBotMessage(formatMarkdown(reply));
+    })
+    .catch(err => {
+        hideTypingIndicator();
+        addBotMessage(`Error calling Gemini API directly: ${err.message}. Please check your API Key.`);
+    });
+}
+
+function getOfflineResponse(inputText, lang) {
+    const textLower = inputText.toLowerCase();
+    if (aiMode === 'symptoms') {
         for (const key in symptomsDatabase) {
             if (textLower.includes(key) || (lang === 'hi' && (textLower.includes('बुखार') && key === 'fever' || textLower.includes('खांसी') && key === 'cough' || textLower.includes('सिरदर्द') && key === 'headache'))) {
-                addBotMessage(symptomsDatabase[key][lang]);
-                logAgent('supervisor', `Clinical match found for: ${key.toUpperCase()}. Diagnostic safety disclaimer active.`);
-                matched = true;
-                break;
+                return symptomsDatabase[key][lang];
             }
         }
-        
-        if (!matched) {
-            const fallback = {
-                en: "Thank you for describing your symptoms. To help me analyze better, could you specify how long you have had this and if you have a fever?",
-                hi: "अपने लक्षणों का वर्णन करने के लिए धन्यवाद। बेहतर विश्लेषण करने में मेरी मदद करने के लिए, क्या आप बता सकते हैं कि आपको यह कितने समय से है और क्या आपको बुखार है?",
-                es: "Gracias por describir sus síntomas. Para ayudarme a analizar mejor, ¿podría especificar cuánto tiempo hace que tiene esto y si tiene fiebre?",
-                ja: "症状を説明していただきありがとうございます。より詳細な分析のため、この症状がいつから続いているか、また発熱があるかどうか教えていただけますか？"
-            };
-            addBotMessage(fallback[lang]);
-            logAgent('ceo', 'No direct match. Asking refining questions to build diagnostic confidence.');
-        }
+        const fallback = {
+            en: "Thank you for describing your symptoms. To help me analyze better, could you specify how long you have had this and if you have a fever?",
+            hi: "अपने लक्षणों का वर्णन करने के लिए धन्यवाद। बेहतर विश्लेषण करने में मेरी मदद करने के लिए, क्या आप बता सकते हैं कि आपको यह कितने समय से है और क्या आपको बुखार है?",
+            es: "Gracias por describir sus síntomas. Para ayudarme a analizar mejor, ¿podría especificar cuánto tiempo hace que tiene esto y si tiene fiebre?",
+            ja: "症状を説明していただきありがとうございます。より詳細な分析のため、この症状がいつから続いているか、また発熱があるかどうか教えていただけますか？"
+        };
+        return fallback[lang];
     } else {
-        // Diet Planner response
-        logAgent('ceo', 'Diet Planner Engine synthesizing customized nutritional recommendations.');
         if (textLower.includes('weight') || textLower.includes('loss') || textLower.includes('fat')) {
-            addBotMessage(`**AI Recommended Weight Loss Diet Plan:**<br>
+            return `**AI Recommended Weight Loss Diet Plan:**<br>
                 • **Breakfast**: Oatmeal with chia seeds, berries, and skimmed milk.<br>
                 • **Lunch**: Grilled chicken salad or Quinoa bowl with mixed vegetables and olive oil dressing.<br>
                 • **Snack**: A handful of almonds and green tea.<br>
                 • **Dinner**: Baked salmon or tofu with steamed broccoli and sweet potato.<br>
-                *Note: Drink at least 3 liters of water daily. Limit sodium and processed sugars.*`);
+                *Note: Drink at least 3 liters of water daily. Limit sodium and processed sugars.*`;
         } else if (textLower.includes('diabetes') || textLower.includes('sugar')) {
-            addBotMessage(`**AI Recommended Low-Glycemic Diabetes Diet Plan:**<br>
+            return `**AI Recommended Low-Glycemic Diabetes Diet Plan:**<br>
                 • **Breakfast**: Spinach and mushroom omelet or sprouted grain toast with avocado.<br>
                 • **Lunch**: Lentil soup with a large leafy green salad (low-carb dressing).<br>
                 • **Snack**: Greek yogurt with walnut halves.<br>
                 • **Dinner**: Roasted turkey breast or grilled paneer with grilled asparagus and cauliflower mash.<br>
-                *Note: Monitor your glucose levels. Prioritize high-fiber foods.*`);
+                *Note: Avoid refined carbs, sweets, and sweetened beverages.*`;
         } else {
-            addBotMessage(`**AI Balanced Wellness Diet Plan:**<br>
-                • **Breakfast**: Whole grain porridge with sliced banana and flaxseeds.<br>
-                • **Lunch**: Brown rice with mixed dal (lentil curry) and sautéed spinach.<br>
-                • **Snack**: Apple slices with almond butter.<br>
-                • **Dinner**: Lean protein (chicken/fish/tempeh) with roasted zucchini and bell peppers.<br>
-                *Adjust portion sizes based on your daily energy expenditure.*`);
+            return `**AI Recommended Balanced Wellness Diet Plan:**<br>
+                • **Breakfast**: Whole grain toast with eggs or avocado, and a cup of mixed fruits.<br>
+                • **Lunch**: Brown rice or quinoa with mixed vegetable curry and a side of yogurt.<br>
+                • **Snack**: Fresh fruit (apple or pear) with a tablespoon of peanut butter.<br>
+                • **Dinner**: Lean protein (grilled fish/chicken or lentils) with a large mixed salad.<br>
+                *Note: Focus on whole, unprocessed foods and portion control.*`;
         }
     }
+}
+
+function formatMarkdown(text) {
+    // 1. Headings
+    text = text.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+    text = text.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+    text = text.replace(/^# (.*$)/gim, '<h2>$1</h2>');
+    
+    // 2. Bold
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    // 3. Bullet lists
+    text = text.replace(/^\s*[\-\*]\s+(.*)/gim, '<li>$1</li>');
+    text = text.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
+    text = text.replace(/<\/ul>\s*<ul>/g, '');
+    
+    // 4. Line breaks
+    text = text.replace(/\n/g, '<br>');
+    
+    return text;
 }
 
 /* ==========================================
