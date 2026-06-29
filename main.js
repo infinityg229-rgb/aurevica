@@ -118,25 +118,102 @@ function sendConsoleChat(event) {
     // Log user message
     logAgent('user', query);
     
-    // Generate Agent Response
-    setTimeout(() => {
-        const lowerQuery = query.toLowerCase();
-        if (lowerQuery.includes('heart') || lowerQuery.includes('cardio') || lowerQuery.includes('attack')) {
-            logAgent('ceo', 'AI CEO: Analyzing cardiac symptoms. Heart Attacks (Myocardial Infarctions) require emergency stenting or thrombolytic drugs. Natural support: Hawthorn Berry, CoQ10.');
-        } else if (lowerQuery.includes('kidney') || lowerQuery.includes('renal') || lowerQuery.includes('stone')) {
-            logAgent('supervisor', 'Supervisor: Kidney stones are fully curable. Drink 3L+ water, use lemon juice & olive oil. Chronic kidney disease (CKD) requires strict BP control and avoiding NSAIDs.');
-        } else if (lowerQuery.includes('eye') || lowerQuery.includes('vision') || lowerQuery.includes('glaucoma') || lowerQuery.includes('cataract')) {
-            logAgent('designer', 'Designer: Retinal scan active. Glaucoma requires pressure-lowering drops to prevent nerve damage. Cataracts are cured via IOL lens replacement surgery.');
-        } else if (lowerQuery.includes('fever') || lowerQuery.includes('dengue') || lowerQuery.includes('malaria')) {
-            logAgent('supervisor', 'Supervisor: Fever alert. For Dengue, use Paracetamol only. Do NOT use Ibuprofen/NSAIDs due to bleeding risks. Malaria is cured with ACT therapy.');
-        } else if (lowerQuery.includes('diet') || lowerQuery.includes('eat') || lowerQuery.includes('food')) {
-            logAgent('ceo', 'AI CEO: Dietetics loaded. Heart: Low-sodium, trans-fat-free. Kidney: Low-sodium, low-potassium. Fatty Liver (NAFLD): Mediterranean diet, zero fructose.');
-        } else if (lowerQuery.includes('help') || lowerQuery.includes('hello') || lowerQuery.includes('hi')) {
-            logAgent('supervisor', 'Supervisor: Welcome to Aurevica. Ask me about heart, kidney, eye, lung, or liver conditions, or query specific medications (e.g. Paracetamol, Ibuprofen).');
-        } else {
-            logAgent('supervisor', 'Supervisor: Query received. I can provide clinical data on organ systems, medical knowledge, medication safety, or speech exercises.');
+    // Log thinking state
+    logAgent('system', 'Aurevica AI is analyzing query...');
+    
+    const removeSystemLog = () => {
+        const consoleBody = document.getElementById('console-body');
+        if (consoleBody && consoleBody.lastElementChild) {
+            const lastLine = consoleBody.lastElementChild;
+            if (lastLine.querySelector('.agent-system') || lastLine.textContent.includes('analyzing query')) {
+                lastLine.remove();
+            }
         }
-    }, 600);
+    };
+    
+    // Try Serverless API first
+    fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: query,
+            mode: 'symptoms', // default to clinical symptoms mode
+            language: 'en'
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Serverless function failed or not found');
+        return res.json();
+    })
+    .then(data => {
+        removeSystemLog();
+        logAgent('supervisor', formatMarkdown(data.reply));
+    })
+    .catch(err => {
+        // Fallback to local API Key if available
+        const localKey = localStorage.getItem('gemini_api_key');
+        if (localKey) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${localKey}`;
+            const systemPrompt = `You are Aurevica AI, a clinical medical assistant. Provide a helpful, accurate, and concise answer to the user's query. Always include a brief medical disclaimer if they ask about health symptoms.`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `${systemPrompt}\n\nUser Query: ${query}`
+                        }]
+                    }]
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Gemini API call failed');
+                return res.json();
+            })
+            .then(data => {
+                removeSystemLog();
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from AI.';
+                logAgent('supervisor', formatMarkdown(reply));
+            })
+            .catch(localErr => {
+                removeSystemLog();
+                logAgent('system', `Error: ${localErr.message}`);
+            });
+        } else {
+            removeSystemLog();
+            
+            // Fallback to local mock response
+            const lowerQuery = query.toLowerCase();
+            let reply = '';
+            let agent = 'supervisor';
+            
+            if (lowerQuery.includes('heart') || lowerQuery.includes('cardio') || lowerQuery.includes('attack')) {
+                agent = 'ceo';
+                reply = 'AI CEO: Analyzing cardiac symptoms. Heart Attacks (Myocardial Infarctions) require emergency stenting or thrombolytic drugs. Natural support: Hawthorn Berry, CoQ10.';
+            } else if (lowerQuery.includes('kidney') || lowerQuery.includes('renal') || lowerQuery.includes('stone')) {
+                reply = 'Supervisor: Kidney stones are fully curable. Drink 3L+ water, use lemon juice & olive oil. Chronic kidney disease (CKD) requires strict BP control and avoiding NSAIDs.';
+            } else if (lowerQuery.includes('eye') || lowerQuery.includes('vision') || lowerQuery.includes('glaucoma') || lowerQuery.includes('cataract')) {
+                agent = 'designer';
+                reply = 'Designer: Retinal scan active. Glaucoma requires pressure-lowering drops to prevent nerve damage. Cataracts are cured via IOL lens replacement surgery.';
+            } else if (lowerQuery.includes('fever') || lowerQuery.includes('dengue') || lowerQuery.includes('malaria')) {
+                reply = 'Supervisor: Fever alert. For Dengue, use Paracetamol only. Do NOT use Ibuprofen/NSAIDs due to bleeding risks. Malaria is cured with ACT therapy.';
+            } else if (lowerQuery.includes('diet') || lowerQuery.includes('eat') || lowerQuery.includes('food')) {
+                agent = 'ceo';
+                reply = 'AI CEO: Dietetics loaded. Heart: Low-sodium, trans-fat-free. Kidney: Low-sodium, low-potassium. Fatty Liver (NAFLD): Mediterranean diet, zero fructose.';
+            } else if (lowerQuery.includes('help') || lowerQuery.includes('hello') || lowerQuery.includes('hi')) {
+                reply = 'Supervisor: Welcome to Aurevica. Ask me about heart, kidney, eye, lung, or liver conditions, or query specific medications (e.g. Paracetamol, Ibuprofen).';
+            } else {
+                reply = 'Supervisor: [Offline Mode] Enter a Gemini API Key in the AI Assistant sidebar to enable full AI chat here.';
+            }
+            
+            logAgent(agent, reply);
+        }
+    });
 }
 
 /* ==========================================
