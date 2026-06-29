@@ -44,6 +44,12 @@
                     <a href="ai-assistant.html" class="btn btn-primary" id="hero-ai-btn">Consult AI Assistant</a>
                     <a href="consultation.html" class="btn btn-secondary" id="hero-doc-btn">Book Doctor</a>
                 </div>
+                
+                <!-- Quick AI Symptom Search -->
+                <div class="hero-search-box" style="margin-top: 2rem; background: var(--surface-container-high); padding: 0.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; gap: 0.5rem; max-width: 480px; box-shadow: var(--shadow-sm); animation: fadeIn 0.8s ease-out;">
+                    <input type="text" id="quick-symptom-input" placeholder="Type symptoms (e.g. fever, headache)..." style="flex: 1; border: none; background: transparent; padding: 0.5rem 0.75rem; color: var(--text-main); font-family: inherit; font-size: 0.9rem; outline: none;" aria-label="Quick symptom checker">
+                    <button id="quick-symptom-btn" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-radius: var(--radius-md);">Ask AI</button>
+                </div>
             </div>
             <div class="hero-image">
                 <!-- Premium SVG Medical Illustration -->
@@ -199,8 +205,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
-
-
-
-

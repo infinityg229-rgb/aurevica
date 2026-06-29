@@ -279,6 +279,24 @@ function initHomePage() {
             logAgent('supervisor', 'Disclaimer declined. Access to home remedies blocked.');
         });
     }
+
+    // Quick Symptom Search
+    const quickInput = document.getElementById('quick-symptom-input');
+    const quickBtn = document.getElementById('quick-symptom-btn');
+    
+    if (quickInput && quickBtn) {
+        const handleQuickSearch = () => {
+            const query = quickInput.value.trim();
+            if (query) {
+                window.location.href = `ai-assistant.html?query=${encodeURIComponent(query)}`;
+            }
+        };
+        
+        quickBtn.addEventListener('click', handleQuickSearch);
+        quickInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleQuickSearch();
+        });
+    }
 }
 
 const remediesData = {
@@ -455,7 +473,16 @@ function initAIAssistantPage() {
     });
     
     // Initial Message
-    addBotMessage(langGreetings[langSelect.value]);
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlQuery = urlParams.get('query');
+    
+    if (urlQuery) {
+        addBotMessage(langGreetings[langSelect.value]);
+        addUserMessage(urlQuery);
+        processAIResponse(urlQuery, langSelect.value);
+    } else {
+        addBotMessage(langGreetings[langSelect.value]);
+    }
 }
 
 function clearChat() {
