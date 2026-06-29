@@ -1011,15 +1011,13 @@ const planPrices = {
 };
 
 function initPricingPage() {
-    logAgent('designer', 'Pricing grid loaded. Formatting multi-currency tables.');
+    logAgent('designer', 'Pricing grid loaded. Formatting INR pricing table.');
     
     const billingBtns = document.querySelectorAll('.toggle-btn');
-    const currencySelect = document.getElementById('currency-select');
-    
     let activeBilling = 'monthly';
     
     const updatePrices = () => {
-        const curr = currencySelect.value;
+        const curr = 'inr';
         const prices = planPrices[activeBilling][curr];
         const suffix = activeBilling === 'monthly' ? '/mo' : activeBilling === 'quarterly' ? '/qtr' : '/yr';
         
@@ -1027,7 +1025,7 @@ function initPricingPage() {
         document.getElementById('pro-price').innerHTML = `${prices.pro}<span>${suffix}</span>`;
         document.getElementById('elite-price').innerHTML = `${prices.elite}<span>${suffix}</span>`;
         
-        logAgent('backend', `Prices updated to: Currency=${curr.toUpperCase()}, Period=${activeBilling.toUpperCase()}`);
+        logAgent('backend', `Prices updated to: Currency=INR, Period=${activeBilling.toUpperCase()}`);
     };
     
     billingBtns.forEach(btn => {
@@ -1038,8 +1036,6 @@ function initPricingPage() {
             updatePrices();
         });
     });
-    
-    currencySelect.addEventListener('change', updatePrices);
     
     // Initial Price Render
     updatePrices();
