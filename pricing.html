@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - Aurevica Lumina</title>
+    <meta name="description" content="Choose the perfect healthcare plan with Aurevica Lumina. Features multi-currency pricing in USD, INR, and JPY, yearly discounts, and a 3-day free trial.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html" class="active">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="pricing-header">
+            <h2>Flexible Clinical Care Plans</h2>
+            <p>Access premium clinical features at a price that fits your budget. Change plans at any time.</p>
+            
+            <!-- Billing Period Toggle -->
+            <div class="toggle-container">
+                <button class="toggle-btn active" data-period="monthly" id="toggle-monthly">Monthly</button>
+                <button class="toggle-btn" data-period="quarterly" id="toggle-quarterly">Quarterly</button>
+                <button class="toggle-btn" data-period="yearly" id="toggle-yearly">Yearly <span style="font-size: 0.65rem; background: var(--secondary-color); color: white; padding: 2px 6px; border-radius: 10px; margin-left: 4px;">Save 20%</span></button>
+            </div>
+
+            <!-- Currency Selector -->
+            <div class="currency-select-container">
+                <label for="currency-select" style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">Display Currency:</label>
+                <select id="currency-select" class="lang-select">
+                    <option value="usd">USD ($)</option>
+                    <option value="inr">INR (₹)</option>
+                    <option value="jpy">JPY (¥)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Plan 1: Basic -->
+            <div class="pricing-card" id="plan-basic-card">
+                <h3 class="plan-name">Basic Care</h3>
+                <p class="plan-desc">For individuals seeking fundamental health tracking and AI guidance.</p>
+                <div class="plan-price" id="basic-price">$9<span>/mo</span></div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--secondary-color); margin-top: -1.5rem; margin-bottom: 1.5rem; display: block;">3-Day Free Trial Included</span>
+                <ul class="features-list">
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Diseases Directory
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Basic Health Vitals Logging
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Natural Home Remedies Access
+                    </li>
+                    <li class="excluded">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        AI Symptom Checker & Diet Planner
+                    </li>
+                    <li class="excluded">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        AI Medical Report Analyzer
+                    </li>
+                    <li class="excluded">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        Doctor Consultation Discounts
+                    </li>
+                </ul>
+                <button class="btn btn-secondary" style="width: 100%;" onclick="alert('Starting 3-Day Free Trial...')">Start 3-Day Trial</button>
+            </div>
+
+            <!-- Plan 2: Pro -->
+            <div class="pricing-card popular" id="plan-pro-card">
+                <div class="popular-badge">Most Popular</div>
+                <h3 class="plan-name">Pro Clinical</h3>
+                <p class="plan-desc">For proactive individuals wanting comprehensive AI health analysis.</p>
+                <div class="plan-price" id="pro-price">$29<span>/mo</span></div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--secondary-color); margin-top: -1.5rem; margin-bottom: 1.5rem; display: block;">Best Value</span>
+                <ul class="features-list">
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Diseases Directory
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Unlimited Vitals Logging & Trends
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Natural Home Remedies Access
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        AI Symptom Checker & Diet Planner
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        AI Medical Report Analyzer
+                    </li>
+                    <li class="excluded">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        Direct Doctor Consultation Credits
+                    </li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;" onclick="alert('Subscribed to Pro Clinical Plan!')">Upgrade to Pro</button>
+            </div>
+
+            <!-- Plan 3: Elite -->
+            <div class="pricing-card" id="plan-elite-card">
+                <h3 class="plan-name">Elite Wellness</h3>
+                <p class="plan-desc">For patients needing full digital care and direct physician communication.</p>
+                <div class="plan-price" id="elite-price">$79<span>/mo</span></div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--secondary-color); margin-top: -1.5rem; margin-bottom: 1.5rem; display: block;">Full Coverage</span>
+                <ul class="features-list">
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Diseases Directory
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Unlimited Vitals Logging & Trends
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        Natural Home Remedies Access
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        AI Symptom Checker & Diet Planner
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        AI Medical Report Analyzer
+                    </li>
+                    <li class="included">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                        2 Free Doctor Consults / month
+                    </li>
+                </ul>
+                <button class="btn btn-secondary" style="width: 100%;" onclick="alert('Subscribed to Elite Wellness Plan!')">Join Elite</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+

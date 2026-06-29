@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseases Directory - Aurevica Lumina</title>
+    <meta name="description" content="Explore Aurevica Lumina's comprehensive clinical directory of diseases from A to Z, including viral infections, genetic disorders, and chronic conditions.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html" class="active">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>Diseases Directory</h2>
+            <p>Access authoritative, peer-reviewed clinical summaries for viral infections, genetic disorders, chronic illnesses, and autoimmune diseases worldwide.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <span class="search-icon">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </span>
+            <input type="text" id="search-input" class="search-input" placeholder="Search diseases by name, symptom, or classification..." aria-label="Search diseases">
+        </div>
+
+        <!-- A-Z Alphabet Filter Bar -->
+        <div class="az-bar" role="navigation" aria-label="Alphabetical Filter">
+            <button class="az-btn active" data-letter="ALL">ALL</button>
+            <button class="az-btn" data-letter="A">A</button>
+            <button class="az-btn" data-letter="B">B</button>
+            <button class="az-btn" data-letter="C">C</button>
+            <button class="az-btn" data-letter="D">D</button>
+            <button class="az-btn" data-letter="E">E</button>
+            <button class="az-btn" data-letter="F">F</button>
+            <button class="az-btn" data-letter="G">G</button>
+            <button class="az-btn" data-letter="H">H</button>
+            <button class="az-btn" data-letter="I">I</button>
+            <button class="az-btn" data-letter="J">J</button>
+            <button class="az-btn" data-letter="K">K</button>
+            <button class="az-btn" data-letter="L">L</button>
+            <button class="az-btn" data-letter="M">M</button>
+            <button class="az-btn" data-letter="N">N</button>
+            <button class="az-btn" data-letter="O">O</button>
+            <button class="az-btn" data-letter="P">P</button>
+            <button class="az-btn" data-letter="Q">Q</button>
+            <button class="az-btn" data-letter="R">R</button>
+            <button class="az-btn" data-letter="S">S</button>
+            <button class="az-btn" data-letter="T">T</button>
+            <button class="az-btn" data-letter="U">U</button>
+            <button class="az-btn" data-letter="V">V</button>
+            <button class="az-btn" data-letter="W">W</button>
+            <button class="az-btn" data-letter="X">X</button>
+            <button class="az-btn" data-letter="Y">Y</button>
+            <button class="az-btn" data-letter="Z">Z</button>
+        </div>
+
+        <!-- Disease Accordion Grid -->
+        <div class="disease-grid">
+            
+            <!-- A: Alzheimer's Disease -->
+            <div class="disease-card" id="disease-alzheimers">
+                <div class="disease-card-header">
+                    <h3>Alzheimer's Disease</h3>
+                    <span class="disease-tag">Neurological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A progressive neurodegenerative disorder that destroys memory and key mental functions.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Persistent memory loss, confusion with time/place, difficulty solving simple problems, and personality changes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Abnormal accumulation of amyloid plaques and neurofibrillary tangles in brain tissue, leading to cell death.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Engage in regular physical exercise, maintain cardiovascular health (low BP/cholesterol), avoid head trauma, and limit alcohol and tobacco.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Treatment focuses on managing symptoms using Cholinesterase Inhibitors (Donepezil) and NMDA receptor antagonists (Memantine), combined with cognitive therapy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B: Bronchitis -->
+            <div class="disease-card" id="disease-bronchitis">
+                <div class="disease-card-header">
+                    <h3>Bronchitis</h3>
+                    <span class="disease-tag">Respiratory</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Inflammation of the mucous membrane in the bronchial tubes, causing bronchial spasms and coughing.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Persistent cough, production of thick mucus, shortness of breath, fatigue, and minor chest discomfort.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Usually caused by viral infections (similar to cold/flu viruses) or chronic exposure to irritants like tobacco smoke.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid cigarette smoke and air pollutants, wash hands frequently, wear a mask in dusty areas, and stay hydrated.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Curable (Acute).</strong> Acute bronchitis resolves on its own. Treatments include rest, fluids, cough suppressants, and bronchodilators (Albuterol). Antibiotics are only used if a bacterial infection is proven.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- C: Cystic Fibrosis -->
+            <div class="disease-card" id="disease-cysticfibrosis">
+                <div class="disease-card-header">
+                    <h3>Cystic Fibrosis</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inherited life-threatening disorder that damages the lungs and digestive system by creating thick, sticky mucus.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Salty-tasting skin, persistent coughing with thick spit, frequent lung infections, wheezing, and poor growth/weight gain.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Mutations in the CFTR gene, inherited in an autosomal recessive pattern, which disrupts salt and water balance in cells.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Practice strict hygiene to prevent infections, avoid contact with sick individuals, keep up-to-date with vaccinations, and avoid dust/smoke.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Managed using CFTR Modulator drugs (e.g., Trikafta) to improve protein function, airway clearance therapies (chest physiotherapy), inhaled bronchodilators, and pancreatic enzyme supplements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D: Dengue Fever -->
+            <div class="disease-card" id="disease-dengue">
+                <div class="disease-card-header">
+                    <h3>Dengue Fever</h3>
+                    <span class="disease-tag">Viral Infection</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A painful, mosquito-borne viral disease causing severe flu-like symptoms and joint pain.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Sudden high fever, severe headache, pain behind the eyes, severe joint and muscle pain ("breakbone fever"), rash, and mild bleeding.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Dengue virus transmitted to humans through the bite of infected female Aedes aegypti mosquitoes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Eliminate standing water near the home, use mosquito repellents (DEET), sleep under insecticide-treated bed nets, and wear long-sleeved clothing.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Curable / Self-Limiting.</strong> No specific antiviral cure. Management is supportive: intensive oral rehydration, pain relief using Acetaminophen (<strong>never use Aspirin or Ibuprofen</strong> as they increase bleeding risk), and platelet count monitoring.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E: Epilepsy -->
+            <div class="disease-card" id="disease-epilepsy">
+                <div class="disease-card-header">
+                    <h3>Epilepsy</h3>
+                    <span class="disease-tag">Neurological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A central nervous system disorder in which brain activity becomes abnormal, causing seizures.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Temporary confusion, staring spells, uncontrollable jerking movements of arms and legs, loss of consciousness, and anxiety.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Genetic influence, head trauma, brain conditions (stroke, tumors), prenatal injury, or developmental disorders.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid known seizure triggers (flashing lights, sleep deprivation, extreme stress), take prescribed medications consistently, and secure physical surroundings to prevent injury during a seizure.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Sometimes Curable / Manageable.</strong> Often managed successfully with anti-seizure medications (AEDs like Levetiracetam, Lamotrigine). In some cases, epilepsy can be cured through surgical resection of the brain's seizure focus, or it may resolve spontaneously (especially childhood-onset epilepsy).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- F: Fibromyalgia -->
+            <div class="disease-card" id="disease-fibromyalgia">
+                <div class="disease-card-header">
+                    <h3>Fibromyalgia</h3>
+                    <span class="disease-tag">Rheumatological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A disorder characterized by widespread musculoskeletal pain accompanied by fatigue, sleep, memory, and mood issues.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Widespread dull ache lasting at least 3 months, chronic fatigue, cognitive difficulties ("fibro fog"), and sleep disturbances.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Believed to involve abnormal pain signaling in the brain and spinal cord, often triggered by physical trauma, surgery, or psychological stress.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Maintain a consistent sleep schedule, practice stress-reduction techniques (meditation, yoga), and engage in regular, low-impact exercise (walking, swimming).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Treatment aims to manage symptoms using pain relievers (Pregabalin, Duloxetine), low-dose antidepressants, physical therapy, and cognitive behavioral therapy (CBT) to improve coping mechanisms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- G: Gout -->
+            <div class="disease-card" id="disease-gout">
+                <div class="disease-card-header">
+                    <h3>Gout</h3>
+                    <span class="disease-tag">Metabolic / Joint</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A common and complex form of arthritis characterized by sudden, severe attacks of pain and redness in joints.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Intense joint pain (typically in the big toe), lingering discomfort, inflammation, redness, and limited range of motion.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Accumulation of urate crystals in the joint, caused by high levels of uric acid (hyperuricemia) in the blood.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Limit alcohol consumption (especially beer), avoid high-purine foods (red meat, seafood, organ meats), drink plenty of water, and avoid rapid weight loss diets which can spike uric acid.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Highly Curable & Manageable.</strong> Acute attacks are cured/resolved using NSAIDs (Indomethacin), Colchicine, or Corticosteroids. Long-term recurrences are prevented and cured by lowering blood uric acid levels with daily medications like Allopurinol or Febuxostat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- H: Huntington's Disease -->
+            <div class="disease-card" id="disease-huntingtons">
+                <div class="disease-card-header">
+                    <h3>Huntington's Disease</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inherited, progressive brain disorder that causes the uncontrolled breakdown of nerve cells in the brain.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Involuntary jerking movements (chorea), muscle rigidity, difficulty speaking or swallowing, cognitive decline, and psychiatric changes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>An autosomal dominant mutation in the HTT gene, characterized by abnormal CAG triplet repeats.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Ensure fall prevention measures are installed in the home, utilize speech therapy early to prevent choking, and undergo genetic screening if there is a family history.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Treatment is supportive and focuses on managing symptoms: Tetrabenazine or Deutetrabenazine to reduce involuntary movements (chorea), antipsychotic medications for mood disturbances, and physical therapy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- I: Inflammatory Bowel Disease (IBD) -->
+            <div class="disease-card" id="disease-ibd">
+                <div class="disease-card-header">
+                    <h3>Inflammatory Bowel Disease</h3>
+                    <span class="disease-tag">Gastrointestinal</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An umbrella term describing chronic inflammation of the digestive tract, including Crohn's and Ulcerative Colitis.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Persistent diarrhea, abdominal pain and cramping, blood in stool, unexplained weight loss, fatigue, and reduced appetite.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Immune system malfunction where the body attacks its own digestive tissues, triggered by environmental factors and genetics.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid trigger foods (spicy, high-fat, or high-fiber foods during flares), eat smaller meals, drink plenty of water, and avoid NSAID pain relievers which can worsen inflammation.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure (Highly Manageable).</strong> Treatment aims for long-term remission using anti-inflammatory drugs (Aminosalicyclates, Corticosteroids), immunomodulators (Azathioprine), and biologic therapies (Infliximab). In severe cases of Ulcerative Colitis, surgical removal of the colon (colectomy) is considered a curative procedure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- J: Joint Rheumatoid Arthritis -->
+            <div class="disease-card" id="disease-jra">
+                <div class="disease-card-header">
+                    <h3>Joint Rheumatoid Arthritis</h3>
+                    <span class="disease-tag">Autoimmune</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A chronic inflammatory disorder where the immune system mistakenly attacks the lining of the joints.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Tender, warm, swollen joints, joint stiffness (especially in the morning), fatigue, fever, and loss of appetite.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>An autoimmune reaction where the body's immune system attacks the synovium, the membrane surrounding joints, destroying cartilage and bone.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Protect joints from heavy stress, maintain a healthy weight, perform gentle range-of-motion exercises, and avoid smoking, which increases disease severity.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> The goal is to induce clinical remission. Treatment involves early and aggressive use of Disease-Modifying Antirheumatic Drugs (DMARDs like Methotrexate), Biologics (TNF inhibitors), and NSAIDs for pain control, alongside physical therapy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- K: Kidney Disease (Chronic) -->
+            <div class="disease-card" id="disease-kidney">
+                <div class="disease-card-header">
+                    <h3>Kidney Disease (Chronic)</h3>
+                    <span class="disease-tag">Renal</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A gradual loss of kidney function over time, leading to dangerous levels of fluid and waste in the body.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Nausea, vomiting, loss of appetite, fatigue, sleep problems, changes in urine output, swelling of feet and ankles, and hypertension.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Most commonly caused by diabetes and high blood pressure, which damage the delicate filtering units (nephrons) in the kidneys.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Strictly control blood sugar and blood pressure, follow a low-sodium and low-protein diet, stay hydrated (unless advised otherwise), and avoid nephrotoxic drugs (like NSAIDs).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Irreversible (Manageable).</strong> Damage cannot be undone. Treatment focuses on slowing progression using ACE inhibitors or ARBs for blood pressure, dietary changes, and managing underlying causes. End-stage renal disease (ESRD) requires dialysis or a kidney transplant.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- L: Lupus Erythematosus -->
+            <div class="disease-card" id="disease-lupus">
+                <div class="disease-card-header">
+                    <h3>Lupus Erythematosus</h3>
+                    <span class="disease-tag">Autoimmune</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A systemic autoimmune disease that occurs when your body's immune system attacks your own tissues and organs.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Fatigue, fever, joint pain and stiffness, a butterfly-shaped rash on the face, skin lesions, shortness of breath, and chest pain.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Autoimmune response triggered by a combination of genetics and environmental factors (sunlight, infections, medications).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid direct sun exposure (wear SPF 50+ and protective clothing), get adequate rest, exercise regularly, and avoid known physical or emotional stressors.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Symptoms are managed and flares prevented using Hydroxychloroquine (antimalarial), Corticosteroids (Prednisone) for acute inflammation, and Immunosuppressants (Mycophenolate, Azathioprine).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- M: Malaria -->
+            <div class="disease-card" id="disease-malaria">
+                <div class="disease-card-header">
+                    <h3>Malaria</h3>
+                    <span class="disease-tag">Parasitic Disease</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A serious and sometimes fatal disease caused by a parasite that commonly infects a certain type of mosquito.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Fever, chills, headache, sweats, fatigue, nausea, vomiting, muscle aches, and bloody stools.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Plasmodium parasite transmitted through the bite of an infected female Anopheles mosquito.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Use insecticide-treated bed nets, spray indoor areas with insect repellent, wear protective clothing, and take prophylactic antimalarial drugs when traveling to high-risk regions.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Fully Curable.</strong> If diagnosed early, malaria can be completely cured. Treatment consists of prescription antimalarial drugs, primarily Artemisinin-based Combination Therapies (ACTs), Chloroquine, or Atovaquone-Proguanil, depending on parasite resistance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- N: Narcolepsy -->
+            <div class="disease-card" id="disease-narcolepsy">
+                <div class="disease-card-header">
+                    <h3>Narcolepsy</h3>
+                    <span class="disease-tag">Neurological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A chronic sleep disorder characterized by overwhelming daytime drowsiness and sudden attacks of sleep.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Excessive daytime sleepiness, sudden loss of muscle tone (cataplexy), sleep paralysis, and hallucinations.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>A deficiency of hypocretin (orexin), a chemical in the brain that regulates wakefulness, often due to an autoimmune attack.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Maintain a strict, consistent sleep schedule, take short, scheduled naps throughout the day, avoid heavy carbohydrate meals before important activities, and avoid driving if sleepiness is uncontrolled.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Symptoms are managed with stimulants (Modafinil, Armodafinil) or amphetamine-like drugs to combat sleepiness, and Sodium Oxybate or antidepressants (SSRIs) to treat cataplexy and sleep paralysis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- O: Osteogenesis Imperfecta -->
+            <div class="disease-card" id="disease-osteogenesis">
+                <div class="disease-card-header">
+                    <h3>Osteogenesis Imperfecta</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inherited genetic bone disorder, also known as brittle bone disease, characterized by fragile bones that break easily.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Bones that fracture easily, bone pain, blue tint in the whites of the eyes (sclera), early hearing loss, and short stature.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Mutations in the COL1A1 or COL1A2 genes, which are responsible for producing type I collagen, a structural protein in bones.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid high-impact sports or activities with a high fall risk, maintain a safe home environment (remove tripping hazards), and perform low-impact exercises like swimming to maintain muscle strength without overloading bones.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Treatment focuses on preventing fractures and managing symptoms: Bisphosphonate drugs (Pamidronate, Zoledronic acid) to increase bone density, physical therapy, orthopedic surgery (inserting metal rods into long bones), and mobility aids.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P: Parkinson's Disease -->
+            <div class="disease-card" id="disease-parkinsons">
+                <div class="disease-card-header">
+                    <h3>Parkinson's Disease</h3>
+                    <span class="disease-tag">Neurological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A progressive nervous system disorder that affects movement, starting with a barely noticeable tremor.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Tremors (often in hands), slowed movement (bradykinesia), rigid muscles, impaired posture and balance, and speech changes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Loss of dopamine-producing neurons in the substantia nigra area of the brain, leading to impaired motor signaling.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Remove home hazards to prevent falls (install grab bars, remove throw rugs), use assistive walking devices if needed, and practice speech and physical therapy exercises daily.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Symptoms are managed using Levopoda/Carbidopa (which converts to dopamine in the brain), Dopamine Agonists (Pramipexole), MAO-B inhibitors, and in advanced cases, Deep Brain Stimulation (DBS) surgery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q: Q Fever -->
+            <div class="disease-card" id="disease-qfever">
+                <div class="disease-card-header">
+                    <h3>Q Fever</h3>
+                    <span class="disease-tag">Infectious Disease</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A bacterial infection caused by Coxiella burnetii, primarily associated with livestock and agricultural workers.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>High fever, severe headache, fatigue, chills, muscle aches, nausea, chest pain, and pneumonia-like cough.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Inhalation of dust contaminated with birth fluids, feces, urine, or milk of infected animals (sheep, goats, cattle).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid consuming unpasteurized milk and dairy products, wear protective masks and gloves when handling livestock or during animal birth, and disinfect animal housing areas regularly.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Fully Curable.</strong> Acute Q Fever is successfully cured with a 2-week course of Doxycycline antibiotics. Chronic Q Fever (rare but serious) is treated with a combination of Doxycycline and Hydroxychloroquine for at least 18 months.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- R: Rheumatoid Arthritis -->
+            <div class="disease-card" id="disease-rheumatoid">
+                <div class="disease-card-header">
+                    <h3>Rheumatoid Arthritis</h3>
+                    <span class="disease-tag">Autoimmune</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A systemic inflammatory disease that can affect more than just your joints, damaging skin, eyes, and lungs.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Symmetrical joint swelling, morning stiffness, rheumatoid nodules under the skin, fatigue, and weight loss.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>An autoimmune process where the immune system attacks the joint linings. Triggered by genetic factors and smoking.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid repetitive joint strain, stay physically active with low-impact workouts, eat an anti-inflammatory diet (omega-3 rich), and avoid smoking.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> Managed effectively using disease-modifying antirheumatic drugs (DMARDs like Methotrexate) and biologic agents to halt joint destruction, along with NSAIDs or low-dose steroids for pain.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- S: Sickle Cell Anemia -->
+            <div class="disease-card" id="disease-sicklecell">
+                <div class="disease-card-header">
+                    <h3>Sickle Cell Anemia</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inherited red blood cell disorder in which there aren't enough healthy red blood cells to carry oxygen throughout your body.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Episodes of severe pain (pain crises), swelling of hands and feet, frequent infections, delayed growth, and vision problems.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>An autosomal recessive mutation in the HBB gene, causing red blood cells to become rigid, sticky, and sickle-shaped.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Stay extremely well-hydrated, avoid sudden temperature changes (which can trigger a crisis), avoid strenuous high-altitude activities, and seek immediate medical attention for any fever.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Curable Only via Transplant.</strong> The only cure is a bone marrow or stem cell transplant, typically reserved for severe cases in children due to high risks. Otherwise, treatment is symptomatic: Hydroxyurea to reduce pain crises, pain medications, vaccinations, and blood transfusions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T: Tuberculosis -->
+            <div class="disease-card" id="disease-tuberculosis">
+                <div class="disease-card-header">
+                    <h3>Tuberculosis</h3>
+                    <span class="disease-tag">Infectious Disease</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A serious infectious disease that mainly affects your lungs, spreading through tiny droplets released into the air.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Coughing that lasts three or more weeks, coughing up blood, chest pain, unintentional weight loss, fatigue, fever, and night sweats.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Infection by Mycobacterium tuberculosis bacteria, transmitted through respiratory droplets from infected individuals.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid close contact with active TB patients in unventilated spaces, wear N95 respirators in high-risk clinical environments, and complete latent TB treatments if exposed.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Fully Curable.</strong> Active tuberculosis is cured with a strict 6-to-9-month regimen of multiple antibiotics (Isoniazid, Rifampin, Ethambutol, and Pyrazinamide). Compliance is critical to prevent drug-resistant TB strains.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- U: Ulcerative Colitis -->
+            <div class="disease-card" id="disease-ulcerative">
+                <div class="disease-card-header">
+                    <h3>Ulcerative Colitis</h3>
+                    <span class="disease-tag">Gastrointestinal</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inflammatory bowel disease that causes long-lasting inflammation and ulcers in the innermost lining of your large intestine.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Diarrhea, often with blood or pus, abdominal pain and cramping, rectal pain, urgency to defecate, and weight loss.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Immune system dysfunction where it attacks the colon, influenced by genetic susceptibility and environmental triggers.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Maintain a food diary to identify trigger foods, eat smaller, more frequent meals, limit caffeine and alcohol, and manage stress through relaxation techniques.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Surgically Curable.</strong> There is no medical cure, but symptoms are managed with anti-inflammatory drugs (Sulfasalazine, Mesalamine), corticosteroids, and biologics. Surgical removal of the entire colon and rectum (proctocolectomy) is considered curative and eliminates the disease.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- V: Vertigo -->
+            <div class="disease-card" id="disease-vertigo">
+                <div class="disease-card-header">
+                    <h3>Vertigo</h3>
+                    <span class="disease-tag">Neurological</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A sensation of spinning or dizziness, often caused by inner ear problems or neurological conditions.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Spinning sensation, tilting, swaying, unbalance, nausea, vomiting, abnormal eye movements (nystagmus), and headache.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Benign paroxysmal positional vertigo (BPPV), Meniere's disease, vestibular neuritis, or central brain stem/cerebellar issues.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Avoid sudden head movements or bending over, sit down immediately when dizziness strikes, ensure hallways are well-lit, and avoid driving or operating machinery during episodes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Highly Curable.</strong> BPPV is cured using specific physical canalith repositioning maneuvers (like the Epley Maneuver). Other forms are treated with vestibular suppressant medications (Meclizine), physical therapy, or treating the underlying infection.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- W: Wilson's Disease -->
+            <div class="disease-card" id="disease-wilsons">
+                <div class="disease-card-header">
+                    <h3>Wilson's Disease</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A rare inherited disorder that causes copper to accumulate in your liver, brain, and other vital organs.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Fatigue, jaundice, golden-brown eye discoloration (Kayser-Fleischer rings), speech/coordination problems, and muscle stiffness.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Autosomal recessive mutations in the ATP7B gene, which prevents the body from excreting excess copper through bile.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Strictly avoid foods high in copper (chocolate, mushrooms, shellfish, nuts, organ meats), have home tap water tested for copper content, and undergo routine liver function monitoring.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>Highly Treatable / Preventable.</strong> No genetic cure, but copper accumulation is fully controlled and damage prevented. Treatment requires lifelong therapy using chelating agents (Penicillamine, Trientine) to bind and remove copper, or Zinc Acetate to prevent copper absorption.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- X: X-Linked Agammaglobulinemia -->
+            <div class="disease-card" id="disease-xla">
+                <div class="disease-card-header">
+                    <h3>X-Linked Agammaglobulinemia</h3>
+                    <span class="disease-tag">Genetic Disorder</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An inherited primary immunodeficiency disease characterized by the inability to produce mature B cells and antibodies.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Frequent, severe bacterial infections (bronchitis, pneumonia, sinusitis, ear infections) beginning in infancy, and chronic diarrhea.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Mutations in the BTK gene on the X chromosome, preventing B lymphocyte development.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Maintain exceptional personal hygiene, avoid crowds and sick individuals, consume only fully cooked foods, and avoid receiving live-virus vaccines (which can cause disease in immunodeficient individuals).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Cure.</strong> The primary treatment is lifelong antibody replacement therapy using Intravenous or Subcutaneous Immunoglobulin (IVIG/SCIG) infusions every 3 to 4 weeks to provide passive immunity and prevent infections.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Y: Yellow Fever -->
+            <div class="disease-card" id="disease-yellowfever">
+                <div class="disease-card-header">
+                    <h3>Yellow Fever</h3>
+                    <span class="disease-tag">Viral Infection</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">An acute viral hemorrhagic disease transmitted by infected mosquitoes, causing jaundice and kidney failure.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Fever, headache, jaundice (yellowing of skin/eyes), muscle pain, nausea, vomiting, and fatigue. Can progress to severe hemorrhaging.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Yellow fever virus transmitted by the bite of infected Aedes or Haemagogus mosquitoes.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Obtain the highly effective Yellow Fever Vaccine (single dose provides lifelong protection), use mosquito repellents, and eliminate mosquito breeding sites.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Specific Cure.</strong> Treatment is purely supportive, aimed at relieving symptoms: hospitalization, oral or intravenous rehydration, and medication to manage fever and pain (avoiding Aspirin or NSAIDs due to bleeding risks).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Z: Zika Virus -->
+            <div class="disease-card" id="disease-zikavirus">
+                <div class="disease-card-header">
+                    <h3>Zika Virus</h3>
+                    <span class="disease-tag">Viral Infection</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">A mosquito-borne viral disease that can cause congenital brain abnormalities, including microcephaly, in newborns.</p>
+                <div class="disease-details">
+                    <div class="details-grid">
+                        <div class="details-block">
+                            <h5>Symptoms</h5>
+                            <p>Mild fever, rash, conjunctivitis (red eyes), muscle and joint pain, headache, and malaise lasting 2-7 days.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Causes</h5>
+                            <p>Zika virus transmitted primarily by the bite of an infected Aedes mosquito. Can also be transmitted sexually.</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Precautions</h5>
+                            <p>Prevent mosquito bites (repellents, window screens), practice safe sex or abstinence if living in or returning from Zika-affected areas (especially important for pregnant women to prevent fetal transmission).</p>
+                        </div>
+                        <div class="details-block">
+                            <h5>Cure & Treatment</h5>
+                            <p><strong>No Specific Cure.</strong> The virus is usually mild and self-limiting. Treatment is supportive: rest, plenty of fluids, and Acetaminophen to relieve fever and joint pain.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+

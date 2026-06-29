@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Medications & Pharmacy - Aurevica Lumina</title>
+    <meta name="description" content="Search Aurevica Lumina's comprehensive medical database. Find chemical compositions, strengths, dosages, and warnings for tablets, syrups, and injections from newborn to old age.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Two-column top layout for Search vs. Camera Scanner */
+        .pharmacy-top-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-padding);
+            margin-bottom: 3rem;
+            align-items: start;
+        }
+        
+        .camera-scanner-card {
+            background: linear-gradient(135deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        
+        .camera-viewport {
+            width: 100%;
+            height: 200px;
+            background-color: #010f1f;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 0.75rem;
+        }
+        
+        .camera-viewport.active {
+            background: radial-gradient(circle, rgba(161,251,0,0.05) 0%, #010f1f 100%);
+            color: var(--accent-color);
+        }
+        
+        .camera-scan-line {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: scan 2s linear infinite;
+        }
+        
+        .camera-overlay-grid {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            border: 2px dashed rgba(161, 251, 0, 0.3);
+            pointer-events: none;
+            box-sizing: border-box;
+            display: none;
+        }
+        
+        .camera-viewport.active .camera-overlay-grid {
+            display: block;
+        }
+        
+        .meds-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background-color: var(--surface-container-high);
+            padding: 0.75rem;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+        }
+        
+        .med-filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--outline-variant);
+            background: transparent;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+        
+        .med-filter-btn:hover, .med-filter-btn.active {
+            background-color: var(--accent-color);
+            color: var(--on-primary);
+            border-color: var(--accent-color);
+            box-shadow: var(--glow-primary);
+        }
+        
+        .med-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: var(--space-card);
+        }
+        
+        .med-card {
+            background: linear-gradient(135deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            transition: var(--transition-normal);
+        }
+        
+        .med-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-lg), var(--glow-primary);
+        }
+        
+        .med-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+        
+        .med-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .med-title span {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .med-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .type-tablet { background-color: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .type-syrup { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .type-injection { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .type-drops { background-color: rgba(167, 139, 250, 0.1); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+        
+        .med-body {
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            flex-grow: 1;
+        }
+        
+        .med-field h5 {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+        
+        .med-field p {
+            font-size: 13px;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+        
+        .warning-text {
+            color: var(--error) !important;
+            font-weight: 600;
+        }
+        
+        .pcm-chart-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(161, 251, 0, 0.02) 0%, rgba(5, 20, 36, 0.5) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .pcm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .pcm-strength-box {
+            background-color: var(--surface-container-high);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+        }
+        
+        .pcm-strength-box h4 {
+            color: var(--accent-color);
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .pharmacy-top-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html" class="active">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>Clinical Medication Index</h2>
+            <p>Identify medications using our AI Camera Scanner, or search the clinical database below.</p>
+        </div>
+
+        <!-- Top Section: Database Search vs. Camera Scanner -->
+        <div class="pharmacy-top-layout">
+            
+            <!-- Left: Database Search -->
+            <div class="card" style="height: 100%;">
+                <h3 style="font-size: 20px; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: var(--accent-color); fill: none; stroke-width: 2;"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    Medicine
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Search the pharmacopeia by drug name, active chemical composition, or age group.</p>
+                
+                <!-- Search Bar -->
+                <div class="search-container" style="max-width: 100%; margin-bottom: 0;">
+                    <span class="search-icon">
+                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    </span>
+                    <input type="text" id="med-search-input" class="search-input" placeholder="Search (e.g. Paracetamol, Ceftriaxone, Dolo, Cremaffin)..." aria-label="Search medications">
+                </div>
+            </div>
+            
+            <!-- Right: AI Camera Scanner -->
+            <div class="camera-scanner-card">
+                <h3 style="font-size: 20px; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: var(--accent-color); fill: none; stroke-width: 2;"><path d="M12 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z M15 2h-6L8 4H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3l-1-2z"/></svg>
+                    AI Medicine Camera Scanner
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Scan a medicine label using your device's camera for instant clinical uses and precautions.</p>
+                
+                <!-- Camera Viewport -->
+                <div class="camera-viewport" id="camera-viewport">
+                    <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; stroke: currentColor; fill: none; stroke-width: 1.5;" id="camera-placeholder-icon"><path d="M15 2h-6L8 4H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3l-1-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span id="camera-status-text">Camera Feed Offline</span>
+                    
+                    <div class="camera-overlay-grid"></div>
+                    <div class="camera-scan-line" id="camera-scan-line"></div>
+                </div>
+                
+                <!-- Scanner Controls -->
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn btn-secondary" id="start-camera-btn" style="flex-grow: 1;">Start Camera</button>
+                    <button class="btn btn-primary" id="capture-scan-btn" style="flex-grow: 1; display: none;">Capture & Analyze</button>
+                    
+                    <!-- Simulator Option -->
+                    <select id="scan-simulator-select" class="lang-select" style="display: none; flex-grow: 1;">
+                        <option value="dolo">Scan Dolo 650 (Paracetamol)</option>
+                        <option value="aspirin">Scan Aspirin (Acetylsalicylic Acid)</option>
+                        <option value="combiflam">Scan Combiflam (Ibuprofen + PCM)</option>
+                        <option value="cremaffin">Scan Cremaffin Syrup</option>
+                        <option value="monocef">Scan Monocef Injection</option>
+                        <option value="blurry">Scan Blurry Label</option>
+                    </select>
+                </div>
+                
+                <!-- Scanner Output -->
+                <div id="scanner-output" style="display: none; padding-top: 1rem; border-top: 1px dashed var(--border-color); animation: fadeIn 0.3s ease-out;">
+                    <!-- Result will be injected here -->
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Paracetamol Strength Matrix -->
+        <div class="pcm-chart-card">
+            <h3 style="color: var(--primary); font-size: 20px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                Paracetamol Strength & Pediatric Dosage Matrix
+            </h3>
+            <p style="color: var(--text-muted); font-size: 13.5px; margin-top: 0.5rem;">
+                Paracetamol (Acetaminophen) is formulated in different concentrations depending on age. Always administer by weight, not age, for pediatric patients.
+            </p>
+            <div class="pcm-grid">
+                <!-- Infant Drops -->
+                <div class="pcm-strength-box">
+                    <h4>Infant Oral Drops</h4>
+                    <p style="color: var(--primary); font-weight: 700; font-size: 14px; margin-bottom: 0.25rem;">Strength: 100 mg / mL</p>
+                    <p style="color: var(--text-muted); font-size: 12.5px;">**Age**: Newborns to 1 Year (weight: 3.2 to 10 kg). Dosage: 10-15 mg/kg per dose. Typically administered via oral syringe.</p>
+                </div>
+                <!-- Suspension 120 -->
+                <div class="pcm-strength-box">
+                    <h4>Pediatric Suspension 120</h4>
+                    <p style="color: var(--primary); font-weight: 700; font-size: 14px; margin-bottom: 0.25rem;">Strength: 120 mg / 5 mL</p>
+                    <p style="color: var(--text-muted); font-size: 12.5px;">**Age**: 1 to 5 Years (weight: 10 to 20 kg). Dosage: 10-15 mg/kg per dose. 5mL contains 120mg of active Paracetamol.</p>
+                </div>
+                <!-- Suspension 250 -->
+                <div class="pcm-strength-box">
+                    <h4>Pediatric Suspension 250</h4>
+                    <p style="color: var(--primary); font-weight: 700; font-size: 14px; margin-bottom: 0.25rem;">Strength: 250 mg / 5 mL</p>
+                    <p style="color: var(--text-muted); font-size: 12.5px;">**Age**: 6 to 12 Years (weight: 20 to 40 kg). Dosage: 10-15 mg/kg per dose. Designed for older children.</p>
+                </div>
+                <!-- Adult Tablets -->
+                <div class="pcm-strength-box">
+                    <h4>Adult Tablets (500 / 650 / 1000)</h4>
+                    <p style="color: var(--primary); font-weight: 700; font-size: 14px; margin-bottom: 0.25rem;">Strength: 500 mg, 650 mg & 1000 mg</p>
+                    <p style="color: var(--text-muted); font-size: 12.5px;">**Age**: 12+ Years & Adults. Dosage: 500mg or 650mg (Dolo) every 4-6 hours. Max: 4000 mg in 24 hours. 1000mg used for severe post-op pain.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filter Bar -->
+        <div class="meds-filter-bar" role="navigation" aria-label="Medication Category Filter">
+            <button class="med-filter-btn active" data-category="all">All Classes</button>
+            <button class="med-filter-btn" data-category="analgesic">Analgesics & Fever</button>
+            <button class="med-filter-btn" data-category="drops">Newborn Drops</button>
+            <button class="med-filter-btn" data-category="pediatric">Pediatric Syrups</button>
+            <button class="med-filter-btn" data-category="syrup">Adult Syrups</button>
+            <button class="med-filter-btn" data-category="injection">Injections</button>
+            <button class="med-filter-btn" data-category="chronic">Chronic Tablets</button>
+        </div>
+
+        <!-- Medications Grid -->
+        <div class="med-grid" id="med-grid">
+            
+            <!-- ====== Category 1: ANALGESICS & FEVER (NSAIDs / Opioids) ====== -->
+            
+            <!-- 1. Dolo 650 -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Dolo 650</h3>
+                        <span>Active: Paracetamol (Acetaminophen)</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Paracetamol IP 650 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>High fever, severe body aches, mild-to-moderate pain, and fever associated with viral infections (including Dengue and Influenza).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 1 tablet every 6 hours as needed. Max: 4 tablets (2600mg) in 24 hours. (Absolute max for Paracetamol is 4000mg/day).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Do not take with other Paracetamol-containing products. Avoid alcohol. High doses can cause acute liver failure.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Aspirin -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Aspirin</h3>
+                        <span>Active: Acetylsalicylic Acid</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Acetylsalicylic Acid 75 mg (low-dose) to 325 mg (standard).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Low-dose (75mg) is used as a blood thinner to prevent heart attacks and stroke. Standard dose (325mg) is used for pain and fever relief.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Cardiac Prevention**: 75mg - 150mg once daily. **Pain/Fever**: 325mg - 650mg every 4 hours. Take with water after meals.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text"><strong>Never give to children/teenagers</strong> (risk of Reye's Syndrome - fatal brain/liver swelling). Contraindicated in bleeding disorders and Dengue.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Combiflam -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Combiflam</h3>
+                        <span>Active: Ibuprofen + Paracetamol</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Ibuprofen BP 400 mg + Paracetamol IP 325 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Severe musculoskeletal pain, arthritis, dental pain, painful menstrual cramps, and inflammatory joint swelling.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 1 tablet 2-3 times daily after food. Do not take on an empty stomach to prevent gastric irritation.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text"><strong>Contraindicated in Dengue Fever</strong> (Ibuprofen thins blood and increases internal bleeding risks). Avoid in patients with gastric ulcers.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Tramadol (From PDF) -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Tramadol</h3>
+                        <span>Active: Tramadol HCl</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Tramadol Hydrochloride IP 50 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Opioid Analgesic: Management of moderate to severe acute or chronic pain (post-surgical pain, severe injury, or chronic cancer pain).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 50 mg - 100 mg every 4 to 6 hours. Max: 400 mg per day. Swallow whole; do not crush.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Highly habit-forming (addiction risk). Can cause severe drowsiness, dizziness, and respiratory depression. Do not mix with alcohol.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Etoricoxib (From PDF) -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Etoricoxib</h3>
+                        <span>Active: Selective COX-2 Inhibitor</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Etoricoxib IP 60 mg, 90 mg, or 120 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Acute gouty arthritis pain, osteoarthritis, rheumatoid arthritis, and post-dental surgery pain.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Osteoarthritis**: 60 mg once daily. **Acute Gouty Arthritis**: 120 mg once daily (limit to maximum 8 days treatment).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Contraindicated in patients with uncontrolled hypertension, ischemic heart disease, or peripheral arterial disease.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Serratiopeptidase (From PDF) -->
+            <div class="med-card" data-category="analgesic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Serratiopeptidase</h3>
+                        <span>Active: Proteolytic Enzyme</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Serratiopeptidase IP 10 mg (enteric-coated).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Reduces swelling, edema, and inflammation associated with post-traumatic injuries, surgeries, or localized infections.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 1 tablet (10 mg) three times daily, taken on an empty stomach (1 hour before or 2 hours after meals).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Can increase bleeding risk. Discontinue 2 weeks prior to scheduled surgery. Avoid if taking blood thinners (Warfarin).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== Category 2: NEWBORN ORAL DROPS ====== -->
+
+            <!-- 7. Calpol Infant Drops -->
+            <div class="med-card" data-category="drops">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Calpol Drops</h3>
+                        <span>Active: Paracetamol</span>
+                    </div>
+                    <span class="med-badge type-drops">Newborn Drops</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Paracetamol IP 100 mg per 1 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Fever and mild pain in newborns and infants, especially post-vaccination fever.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Newborns (3.2 - 10 kg)**: 10 - 15 mg/kg per dose. E.g., for a 5kg baby, dose is 0.5 mL to 0.75 mL. Repeat every 6 hours if needed.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Always use the calibrated dropper provided. Do not dose by age alone; dose strictly by the baby's current weight.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Colicaid Drops -->
+            <div class="med-card" data-category="drops">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Colicaid Drops</h3>
+                        <span>Active: Simethicone + Oils</span>
+                    </div>
+                    <span class="med-badge type-drops">Newborn Drops</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Simethicone USP 40 mg + Dill Oil 0.005 mL + Fennel Oil 0.0007 mL per 1 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Infantile colic, abdominal griping pain, gas distension, and flatulence in newborns and infants.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Infants (under 6 months)**: 5 - 10 drops, 4 times daily, 15 minutes before feeding. **6-12 months**: 10 - 20 drops.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Shake well before use. Do not exceed the recommended frequency. If colic persists, consult a pediatrician.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== Category 3: PEDIATRIC SYRUPS (Children) ====== -->
+
+            <!-- 9. Calpol 250 Suspension -->
+            <div class="med-card" data-category="pediatric">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Calpol 250</h3>
+                        <span>Active: Paracetamol</span>
+                    </div>
+                    <span class="med-badge type-syrup">Pediatric Syrup</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Paracetamol IP 250 mg per 5 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Fever and pain relief in older children (teething, viral fever, mild muscle aches).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Children (15 - 40 kg)**: 10 - 15 mg/kg per dose. E.g., for a 20kg child, dose is 5 mL (250mg) every 6 hours. Max: 4 doses in 24 hours.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Ensure you are using the 250mg/5ml strength and not the weaker 120mg/5ml strength. Check the bottle label carefully.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Piperazine Citrate (From PDF) -->
+            <div class="med-card" data-category="pediatric">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Piperazine Citrate</h3>
+                        <span>Active: Antihelminthic</span>
+                    </div>
+                    <span class="med-badge type-syrup">Pediatric Syrup</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Piperazine Citrate IP 750 mg per 5 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Treatment of intestinal worm infections, specifically Roundworms (Ascaris lumbricoides) and Threadworms/Pinworms.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Infants (under 2 years)**: 2.5 mL (375mg) as a single dose. **Children 2-6 Years**: 5 mL (750mg) as a single dose. Repeat after 2 weeks.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Contraindicated in children with epilepsy, neurological disorders, or impaired renal function.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Phenobarbitone Syrup (From PDF) -->
+            <div class="med-card" data-category="pediatric">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Phenobarbitone</h3>
+                        <span>Active: Anticonvulsant</span>
+                    </div>
+                    <span class="med-badge type-syrup">Pediatric Syrup</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Phenobarbitone Sodium IP 30 mg per 5 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Control and prevention of generalized tonic-clonic seizures, febrile convulsions, and neonatal seizures in infants.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Pediatrics**: 3 - 5 mg/kg per day in 2 divided doses. Highly individualized. Must be measured using a syringe.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Highly sedative. Can cause respiratory depression, cognitive slowing, and behavioral disturbances in children. Long-term use requires monitoring.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== Category 4: ADULT & GERIATRIC SYRUPS ====== -->
+
+            <!-- 12. Cremaffin -->
+            <div class="med-card" data-category="syrup">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Cremaffin</h3>
+                        <span>Active: Liquid Paraffin + Milk of Magnesia</span>
+                    </div>
+                    <span class="med-badge type-syrup">Adult Syrup</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Liquid Paraffin IP 1.25 mL + Milk of Magnesia IP 3.75 mL per 5 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Symptomatic relief of acute and chronic constipation. Softens stool and eases bowel movements in pregnant women or geriatric patients.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults & Elderly**: 15 mL - 30 mL (1 to 2 tablespoons) taken at bedtime with a glass of warm water.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Avoid prolonged daily use (can cause dependence and nutrient malabsorption). Do not take within 2 hours of other oral medications.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. Ascoril LS -->
+            <div class="med-card" data-category="syrup">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Ascoril LS</h3>
+                        <span>Active: Levosalbutamol + Expectorants</span>
+                    </div>
+                    <span class="med-badge type-syrup">Adult Syrup</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Levosalbutamol 1 mg + Ambroxol Hydrochloride 30 mg + Guaiphenesin 50 mg per 5 mL.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Productive (wet) cough associated with asthma, bronchitis, COPD, and chest congestion.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 10 mL three times daily. **Children (6-12 Years)**: 5 mL three times daily.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">May cause mild tremors, increased heart rate (tachycardia), or palpitations due to Levosalbutamol. Caution in hypertensive patients.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== Category 5: CLINICAL INJECTIONS ====== -->
+
+            <!-- 14. Monocef Injection -->
+            <div class="med-card" data-category="injection">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Monocef</h3>
+                        <span>Active: Ceftriaxone Sodium</span>
+                    </div>
+                    <span class="med-badge type-injection">IV / IM Injection</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Ceftriaxone Sodium Sterile USP 1g (1000 mg) per vial.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Severe bacterial infections including typhoid fever, bacterial meningitis, abdominal sepsis, and surgical infection prophylaxis.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 1g - 2g dissolved in sterile water, administered slowly via Intravenous (IV) infusion or deep Intramuscular (IM) injection once daily.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Must be administered by a registered nurse or doctor. Test dose recommended to check for cephalosporin/penicillin anaphylaxis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. Lignocaine 1% (From PDF) -->
+            <div class="med-card" data-category="injection">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Lignocaine 1%</h3>
+                        <span>Active: Local Anaesthetic</span>
+                    </div>
+                    <span class="med-badge type-injection">Local Injection</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Lignocaine Hydrochloride IP 1% w/v (10 mg/mL).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Production of local anesthesia (infiltration, nerve block, epidural) for minor surgical procedures, dental work, or suturing.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Infiltration**: Individualized by procedure. Max single dose: 4.5 mg/kg (not exceeding 300 mg total without Epinephrine).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Accidental intravenous injection can cause severe cardiovascular depression, bradycardia, arrhythmias, or seizures.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== Category 6: CHRONIC DISEASE TABLETS ====== -->
+
+            <!-- 16. Thyronorm -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Thyronorm</h3>
+                        <span>Active: Levothyroxine Sodium</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Levothyroxine Sodium IP available in 12.5 mcg, 25 mcg, 50 mcg, 75 mcg, 100 mcg, 125 mcg, and 150 mcg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Replacement therapy in hypothyroidism (underactive thyroid gland) and treatment of thyroid stimulating hormone (TSH) suppression.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: Dose is highly individualized. Taken as a single dose **on an empty stomach, 1 hour before breakfast** with water.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Do not take with calcium or iron supplements (reduces absorption). Monitor TSH levels every 6-8 weeks to adjust dosage.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 17. Glycomet -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Glycomet</h3>
+                        <span>Active: Metformin HCl</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Metformin Hydrochloride IP 500 mg, 850 mg, or 1000 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>First-line treatment of Type 2 Diabetes Mellitus to manage blood glucose, improve insulin sensitivity, and protect renal functions.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 500 mg twice daily or 1000 mg once daily, taken **with or immediately after meals** to minimize gastrointestinal upset.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Contraindicated in severe renal impairment (eGFR < 30). Suspend medication 48 hours prior to any medical scans requiring contrast dyes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 18. Alprazolam (From PDF) -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Alprazolam</h3>
+                        <span>Active: Benzodiazepine (Anxiolytic)</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Alprazolam IP 0.25 mg or 0.5 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Short-term management of severe anxiety disorders, panic disorder (with or without agoraphobia), and anxiety-associated insomnia.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Anxiety**: 0.25 mg to 0.5 mg, administered 3 times daily. **Elderly**: Start with lowest dose (0.125 mg to 0.25 mg) 2 times daily.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Highly habit-forming; physical and psychological dependence develops rapidly. Causes severe drowsiness. Do not discontinue abruptly (withdrawal seizures).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 19. Allopurinol (From PDF) -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Allopurinol</h3>
+                        <span>Active: Xanthine Oxidase Inhibitor</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Allopurinol IP 100 mg or 300 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Prevention of gout attacks, hyperuricemia (excess uric acid), and prevention of calcium oxalate kidney stones.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: Start at 100 mg once daily, gradually titrating up to 300 mg daily based on serum uric acid levels. Take after meals.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Discontinue immediately if any skin rash or hives develop (risk of Stevens-Johnson Syndrome - a life-threatening skin reaction).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 20. Methotrexate (From PDF) -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Methotrexate</h3>
+                        <span>Active: Antimetabolite (DMARD)</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Methotrexate IP 5 mg, 7.5 mg, or 10 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>First-line disease-modifying drug (DMARD) for severe active Rheumatoid Arthritis, severe Psoriasis, and various oncology indications.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p class="warning-text">**RA & Psoriasis**: 7.5 mg to 15 mg taken **ONCE WEEKLY** on a designated day (never take daily). Co-prescribed with Folic Acid.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Daily dosing error is fatal. Requires regular liver function tests (LFTs) and complete blood counts (CBC). Teratogenic (do not use in pregnancy).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 21. Diazepam (From PDF) -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Diazepam</h3>
+                        <span>Active: Benzodiazepine</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Diazepam IP 5 mg or 10 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Management of acute anxiety, muscle spasms, acute convulsive seizures/epilepsy, and relief of acute alcohol withdrawal symptoms.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Adults**: 2 mg to 10 mg, administered 2 to 4 times daily depending on severity. **Muscle Spasm**: 5 mg - 10 mg at night.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Significant sedative properties; avoid driving or operating machinery. High risk of dependence. Contraindicated in respiratory depression.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 22. Mebendazole (From PDF) -->
+            <div class="med-card" data-category="chronic">
+                <div class="med-header">
+                    <div class="med-title">
+                        <h3>Mebendazole</h3>
+                        <span>Active: Antihelminthic</span>
+                    </div>
+                    <span class="med-badge type-tablet">Tablet</span>
+                </div>
+                <div class="med-body">
+                    <div class="med-field">
+                        <h5>Chemical Composition</h5>
+                        <p>Mebendazole IP 100 mg or 200 mg.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Clinical Uses</h5>
+                        <p>Treatment of single or mixed gastrointestinal worm infestations (e.g., Pinworms, Roundworms, Whipworms, and Hookworms).</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Standard Dosage</h5>
+                        <p>**Pinworms**: 100 mg as a single dose. **Other Worms**: 100 mg twice daily (morning and evening) for 3 consecutive days. Chew before swallowing.</p>
+                    </div>
+                    <div class="med-field">
+                        <h5>Precautions</h5>
+                        <p class="warning-text">Contraindicated in pregnant women (teratogenic in animal studies). Not recommended for children under 2 years of age.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>

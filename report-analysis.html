@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Analyzer & Doctor Uploads - Aurevica Lumina</title>
+    <meta name="description" content="Upload medical checkup reports, CT scans, and brain scans to Aurevica Lumina for instant AI analysis, and access doctor uploaded prescriptions.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html" class="active">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>AI Medical Report Analysis & Portal</h2>
+            <p>Patients can upload clinical reports for AI evaluation. Doctors can upload official prescriptions and medication regimes.</p>
+        </div>
+
+        <div class="report-layout">
+            <!-- Upload Column -->
+            <div>
+                <!-- Patient Report Upload -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: var(--primary-color); fill: none; stroke-width: 2;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Patient Portal: Upload Checkup Report
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Upload blood tests, CT scans, MRI, brain scans, or physical checkup reports (PDF, JPG, PNG).</p>
+                    
+                    <div class="upload-area" id="patient-upload-area">
+                        <svg viewBox="0 0 24 24"><path d="M12 16V8M9 11l3-3 3 3m-9 9h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2z"/></svg>
+                        <p style="font-weight: 600; color: var(--primary-color);">Drag & drop file here or click to browse</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Max file size: 15MB</p>
+                        <input type="file" id="report-file-input" accept="image/*,application/pdf" aria-label="Upload report file">
+                        
+                        <!-- Scanning Animation Overlay -->
+                        <div class="scanner-animation" id="scanner-animation">
+                            <div class="scanner-line"></div>
+                            <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; stroke: white; animation: pulse 1.5s infinite; fill: none;"><path d="M9 12l2 2 4-4m5 .5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <h4 style="color: white; margin-top: 1rem; font-family: 'Courier New', monospace;">SCANNING CLINICAL DATA...</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Quality simulation toggle -->
+                    <div class="quality-toggle">
+                        <input type="checkbox" id="simulate-blurry-check" id="blurry-sim-toggle">
+                        <label for="simulate-blurry-check" style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer;">Simulate Blurry / Low Quality Scan</label>
+                    </div>
+                </div>
+
+                <!-- Doctor Prescription Upload -->
+                <div class="card">
+                    <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: var(--primary-color); fill: none; stroke-width: 2;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                        Doctor Portal: Upload Prescription
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Authorized physicians can upload medical prescriptions and medication regimes directly to patient profiles.</p>
+                    
+                    <button class="btn btn-secondary" style="width: 100%;" onclick="alert('Doctor authorization required. Redirecting to doctor credential validation...')">Access Doctor Prescription Portal</button>
+                </div>
+            </div>
+
+            <!-- Analysis Output Column -->
+            <div class="analysis-result-card" id="analysis-result-card">
+                <div class="analysis-placeholder">
+                    <svg viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    <h3>AI Diagnostic Report Analysis</h3>
+                    <p>Upload a checkup report or scan on the left. Our AI will extract parameters, highlight concerns, and suggest lifestyle adjustments.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+

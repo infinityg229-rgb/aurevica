@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker - Aurevica Lumina</title>
+    <meta name="description" content="Log and monitor your clinical health vitals, including Blood Pressure and Blood Glucose, with Aurevica Lumina's secure health tracker.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html" class="active">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>Personal Health Dashboard</h2>
+            <p>Track your physiological metrics over time to identify trends and optimize your lifestyle.</p>
+        </div>
+
+        <div class="tracker-layout">
+            <!-- Blood Pressure Tracker -->
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <div class="tracker-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <h3>Blood Pressure Tracker</h3>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">mmHg</span>
+                </div>
+
+                <!-- Input Form -->
+                <form id="bp-form" class="tracker-form">
+                    <div class="form-group">
+                        <label for="sys-input">Systolic (Upper)</label>
+                        <input type="number" id="sys-input" class="form-input" placeholder="120" min="50" max="250" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dia-input">Diastolic (Lower)</label>
+                        <input type="number" id="dia-input" class="form-input" placeholder="80" min="30" max="150" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem;" id="bp-submit-btn">Log</button>
+                </form>
+
+                <!-- Chart -->
+                <div class="tracker-chart" id="bp-chart">
+                    <div style="text-align: center; width: 100%; color: var(--text-muted); font-size: 0.9rem;">
+                        No data logged yet.
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="tracker-history" id="bp-history">
+                    <!-- History logs will appear here -->
+                </div>
+            </div>
+
+            <!-- Blood Glucose Tracker -->
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <div class="tracker-title">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        <h3>Blood Glucose Tracker</h3>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">mg/dL</span>
+                </div>
+
+                <!-- Input Form -->
+                <form id="sugar-form" class="tracker-form">
+                    <div class="form-group">
+                        <label for="sugar-input">Glucose Level</label>
+                        <input type="number" id="sugar-input" class="form-input" placeholder="100" min="20" max="500" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sugar-type">Measurement Type</label>
+                        <select id="sugar-type" class="form-input" style="background: white;" required>
+                            <option value="fasting">Fasting</option>
+                            <option value="post-meal">Post-Meal</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem;" id="sugar-submit-btn">Log</button>
+                </form>
+
+                <!-- Chart -->
+                <div class="tracker-chart" id="sugar-chart">
+                    <div style="text-align: center; width: 100%; color: var(--text-muted); font-size: 0.9rem;">
+                        No data logged yet.
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="tracker-history" id="sugar-history">
+                    <!-- History logs will appear here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Therapy Portal - Aurevica Lumina</title>
+    <meta name="description" content="Engage in interactive speech therapy exercises and utilize Aurevica Lumina's simulated AI voice analyzer to improve articulation, pacing, and vocal depth.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .therapy-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: var(--space-padding);
+        }
+        
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 620px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .exercise-card {
+            background-color: var(--surface-container);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .exercise-card:hover, .exercise-card.active {
+            border-color: var(--accent-color);
+            background-color: rgba(161, 251, 0, 0.04);
+            box-shadow: var(--glow-primary);
+        }
+        
+        .exercise-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--on-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: var(--glow-primary);
+        }
+        
+        .exercise-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .exercise-info h4 {
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .exercise-info p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        .exercise-instruction {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .vocal-remedies-section {
+            grid-column: 1 / -1;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, rgba(161, 251, 0, 0.02) 0%, rgba(5, 20, 36, 0.5) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+        }
+        
+        .remedy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .remedy-card {
+            background-color: var(--surface-container-high);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: var(--transition-fast);
+        }
+        
+        .remedy-card:hover {
+            border-color: var(--accent-color);
+        }
+        
+        .remedy-card h5 {
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .remedy-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html" class="active">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>Interactive Speech Therapy</h2>
+            <p>Practice clinical exercises to target specific speech disorders, deepen vocal pitch, or improve articulation agility.</p>
+        </div>
+
+        <div class="therapy-layout">
+            <!-- Exercise Selection -->
+            <div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Clinical Exercises</h3>
+                <div class="exercise-list">
+                    
+                    <!-- 1. Stuttering -->
+                    <div class="exercise-card active" data-disorder="stuttering" data-prompt="A smooth river flows gently down the green valley." id="ex-stuttering">
+                        <div class="exercise-num">1</div>
+                        <div class="exercise-info">
+                            <h4>Stuttering & Stammering (Fluency)</h4>
+                            <p>For stuttering. Focuses on reducing tension when starting words.</p>
+                            <span class="exercise-instruction">Practice: **Easy Onset** (Start with a soft, warm breath before vocalizing) and **Light Contact** (touch lips/tongue gently).</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 2. Apraxia -->
+                    <div class="exercise-card" data-disorder="apraxia" data-prompt="Ba-na-na, Po-ta-to, Co-mu-ni-ca-tion, Hos-pi-ta-li-za-tion." id="ex-apraxia">
+                        <div class="exercise-num">2</div>
+                        <div class="exercise-info">
+                            <h4>Apraxia of Speech (Motor Planning)</h4>
+                            <p>For coordinate brain-to-mouth muscle planning. Focuses on syllable transitions.</p>
+                            <span class="exercise-instruction">Practice: **Syllable Pacing** (Tap your finger for every syllable, maintaining an equal, slow rhythm).</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 3. Dysarthria -->
+                    <div class="exercise-card" data-disorder="dysarthria" data-prompt="Make the bold path clear, strong, and bright." id="ex-dysarthria">
+                        <div class="exercise-num">3</div>
+                        <div class="exercise-info">
+                            <h4>Dysarthria (Muscle Weakness)</h4>
+                            <p>For slurred speech due to muscle weakness. Focuses on strength and clarity.</p>
+                            <span class="exercise-instruction">Practice: **Over-Articulation** (Exaggerate consonant sounds like 'b', 'p', 't', 'k' and project from the diaphragm).</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Lisp -->
+                    <div class="exercise-card" data-disorder="lisp" data-prompt="Six silly sisters swam silently in the saline sea." id="ex-lisp">
+                        <div class="exercise-num">4</div>
+                        <div class="exercise-info">
+                            <h4>Lisp (Articulation Disorder)</h4>
+                            <p>For interdental protrusion (tongue between teeth on 'S'/'Z' sounds).</p>
+                            <span class="exercise-instruction">Practice: **Closed-Teeth Placement** (Keep your teeth closed and place your tongue tip against the roof of your mouth behind your front teeth).</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Voice Deepening -->
+                    <div class="exercise-card" data-disorder="deepening" data-prompt="A deep resonance echoes from the chest cavity." id="ex-deepening">
+                        <div class="exercise-num">5</div>
+                        <div class="exercise-info">
+                            <h4>Voice Deepening & Chest Resonance</h4>
+                            <p>To safely lower vocal pitch, develop a richer timbre, and prevent high nasal strain.</p>
+                            <span class="exercise-instruction">Practice: **Yawn-Sigh Technique** (Simulate a yawn to lower your larynx, relax your throat, and project sound from your chest).</span>
+                        </div>
+                    </div>
+
+                    <!-- 6. Tongue Twister -->
+                    <div class="exercise-card" data-disorder="twisters" data-prompt="Peter Piper picked a peck of pickled peppers." id="ex-twisters">
+                        <div class="exercise-num">6</div>
+                        <div class="exercise-info">
+                            <h4>Tongue Twisters (Articulatory Agility)</h4>
+                            <p>For speed control, muscular coordination, and rapid articulation agility.</p>
+                            <span class="exercise-instruction">Practice: **Incremental Pacing** (Start very slowly, focusing on perfect clarity, then gradually increase speed).</span>
+                        </div>
+                    </div>
+
+                    <!-- 7. Aphasia -->
+                    <div class="exercise-card" data-disorder="aphasia" data-prompt="The sun rises in the east, and sets in the..." id="ex-aphasia">
+                        <div class="exercise-num">7</div>
+                        <div class="exercise-info">
+                            <h4>Aphasia (Language Retrieval)</h4>
+                            <p>For word-finding and verbal expression issues (typically post-stroke).</p>
+                            <span class="exercise-instruction">Practice: **Sentence Completion** (Speak the prompt and complete the missing word at the end out loud).</span>
+                        </div>
+                    </div>
+
+                    <!-- 8. Dysphonia -->
+                    <div class="exercise-card" data-disorder="dysphonia" data-prompt="Mmm-hmmm, hum a sweet melody on a sliding scale." id="ex-dysphonia">
+                        <div class="exercise-num">8</div>
+                        <div class="exercise-info">
+                            <h4>Dysphonia (Vocal Strain & Pitch)</h4>
+                            <p>For hoarse, strained, or weak vocal quality. Focuses on vocal hygiene.</p>
+                            <span class="exercise-instruction">Practice: **Resonant Voice Humming** (Hum gently focusing the vibration in your lips and nose, then slide your pitch up and down).</span>
+                        </div>
+                    </div>
+
+                    <!-- 9. Cluttering -->
+                    <div class="exercise-card" data-disorder="cluttering" data-prompt="To communicate effectively, we must speak deliberately, pausing at commas." id="ex-cluttering">
+                        <div class="exercise-num">9</div>
+                        <div class="exercise-info">
+                            <h4>Cluttering (Rapid / Irregular Speech)</h4>
+                            <p>For abnormally rapid, jerky, or disorganized speech pacing.</p>
+                            <span class="exercise-instruction">Practice: **Punctuation Pausing** (Stop and take a full breath at every comma and period. Do not rush the syllables).</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Voice Analyzer Widget -->
+            <div class="analyzer-container" style="height: fit-content; position: sticky; top: 100px;">
+                <h3 style="font-size: 1.35rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">AI Voice Analyzer</h3>
+                
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Please read the following prompt aloud after clicking the Record button:</p>
+                
+                <div id="active-exercise-text" style="font-size: 1.35rem; font-family: 'Outfit', sans-serif; font-weight: 600; text-align: center; margin: 1.5rem 0; padding: 1.5rem; background-color: var(--surface-container-high); border-radius: var(--radius-md); border: 1px solid var(--border-color); color: var(--accent-color);">
+                    "A smooth river flows gently down the green valley."
+                </div>
+
+                <!-- Record Button & Waves -->
+                <div class="record-btn-container">
+                    <button id="record-btn" class="record-btn" aria-label="Start recording">
+                        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+                    </button>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);" id="record-status-label">Click to Start Recording</span>
+                    
+                    <!-- Waveform Animation -->
+                    <div class="analyzer-waveform">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Results Display Area -->
+                <div id="analyzer-results" class="analysis-placeholder">
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Analysis results will be displayed here after you complete the exercise.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vocal Care Remedies Section -->
+        <div class="vocal-remedies-section">
+            <h3 style="font-size: 1.5rem; color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                Natural Vocal Care & Cures
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem;">
+                Nourish and protect your vocal folds naturally to prevent strain, maintain elasticity, and support a deeper, resonant speaking register.
+            </p>
+            
+            <div class="remedy-grid">
+                <!-- Warm Ginger & Honey -->
+                <div class="remedy-card">
+                    <h5>Warm Ginger & Honey</h5>
+                    <p>Acts as an organic anti-inflammatory and demulcent. Soothes vocal fold tissues and reduces swelling or strain after prolonged speaking.</p>
+                </div>
+                <!-- Slippery Elm -->
+                <div class="remedy-card">
+                    <h5>Slippery Elm Tea</h5>
+                    <p>Contains high levels of mucilage, which coats the throat lining, lubricating the vocal folds and preventing vocal raspiness or cracking.</p>
+                </div>
+                <!-- Steam Hydration -->
+                <div class="remedy-card">
+                    <h5>Steam Inhalation</h5>
+                    <p>Inhaling warm steam directly hydrates the vocal folds. Thin mucosal layers allow the vocal folds to vibrate more freely, facilitating a deeper tone.</p>
+                </div>
+                <!-- Avoid Dehydrators -->
+                <div class="remedy-card">
+                    <h5>Hydration (Lukewarm)</h5>
+                    <p>Drink 2-3 liters of room-temperature water. Avoid ice-cold water (which constricts throat muscles) and caffeine (which dries out the vocal cords).</p>
+                </div>
+            </div>
+            
+            <p style="font-size: 12px; color: var(--outline); font-style: italic; margin-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1rem;">
+                *Clinical Disclaimer*: Natural vocal remedies provide supportive care. Chronic hoarseness or sudden loss of voice lasting more than two weeks should be evaluated by an Otolaryngologist (ENT).
+            </p>
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>

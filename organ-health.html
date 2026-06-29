@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organ Health Guide - Aurevica Lumina</title>
+    <meta name="description" content="Explore Aurevica Lumina's clinical guide to organ-specific health. Find symptoms, causes, precautions, and cures for diseases affecting the Heart, Kidneys, Eyes, and other vital organs.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for Organ Health page */
+        .organ-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .organ-btn {
+            background: var(--surface-container-high);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .organ-btn:hover, .organ-btn.active {
+            border-color: var(--accent-color);
+            background-color: rgba(161, 251, 0, 0.04);
+            transform: translateY(-2px);
+            box-shadow: var(--glow-primary);
+        }
+        
+        .organ-btn svg {
+            width: 48px;
+            height: 48px;
+            fill: none;
+            stroke: var(--text-muted);
+            stroke-width: 1.5;
+            transition: var(--transition-fast);
+        }
+        
+        .organ-btn:hover svg, .organ-btn.active svg {
+            stroke: var(--accent-color);
+            filter: drop-shadow(0 0 6px var(--accent-color));
+        }
+        
+        .organ-btn span {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        .organ-btn.active span {
+            color: var(--accent-color);
+        }
+        
+        .organ-content-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .organ-content-section.active {
+            display: block;
+        }
+        
+        .condition-layout {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: start;
+        }
+        
+        .condition-card {
+            background: linear-gradient(135deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .condition-card h4 {
+            font-size: 22px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .visual-card {
+            background-color: var(--surface-container-low);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .visual-container {
+            width: 100%;
+            height: 260px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: #010f1f;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .natural-remedies-card {
+            background: linear-gradient(135deg, rgba(161, 251, 0, 0.03) 0%, rgba(5, 20, 36, 0.6) 100%);
+            border: 1px solid rgba(161, 251, 0, 0.15);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .natural-remedies-card h4 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 20px;
+        }
+        
+        .natural-remedies-card h4 svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+        
+        .remedy-item {
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+        
+        .remedy-item strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .remedy-item p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+        }
+        
+        .responsibility-note {
+            font-size: 12px;
+            color: var(--outline);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 1024px) {
+            .condition-layout {
+                grid-template-columns: 1fr;
+            }
+            .visual-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html" class="active">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="section-title">
+            <h2>Organ-Specific Health Guide</h2>
+            <p>Select an organ to view associated clinical conditions, symptoms, causes, precautions, and treatments.</p>
+        </div>
+
+        <!-- Organ Selector Grid -->
+        <div class="organ-selector-grid" role="tablist" aria-label="Select Organ">
+            <!-- Heart -->
+            <button class="organ-btn active" data-organ="heart" role="tab" aria-selected="true" id="tab-heart">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span>Heart</span>
+            </button>
+            <!-- Kidney -->
+            <button class="organ-btn" data-organ="kidney" role="tab" aria-selected="false" id="tab-kidney">
+                <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 3.5 5 9 5 9s5-5.5 5-9a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                <span>Kidneys</span>
+            </button>
+            <!-- Eyes -->
+            <button class="organ-btn" data-organ="eyes" role="tab" aria-selected="false" id="tab-eyes">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Eyes</span>
+            </button>
+            <!-- Lungs -->
+            <button class="organ-btn" data-organ="lungs" role="tab" aria-selected="false" id="tab-lungs">
+                <svg viewBox="0 0 24 24"><path d="M12 2c-3.33 0-6 2.67-6 6v3c0 3.33 2.67 6 6 6s6-2.67 6-6V8c0-3.33-2.67-6-6-6zM8 8c0-2.21 1.79-4 4-4s4 1.79 4 4v3c0 2.21-1.79 4-4 4s-4-1.79-4-4V8z"/></svg>
+                <span>Lungs</span>
+            </button>
+            <!-- Brain -->
+            <button class="organ-btn" data-organ="brain" role="tab" aria-selected="false" id="tab-brain">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.17 19.62 10.53 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                <span>Brain</span>
+            </button>
+            <!-- Liver -->
+            <button class="organ-btn" data-organ="liver" role="tab" aria-selected="false" id="tab-liver">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99z"/></svg>
+                <span>Liver</span>
+            </button>
+        </div>
+
+        <!-- Organ Content Area -->
+        <div id="organ-content-container">
+            
+            <!-- HEART SECTION -->
+            <div class="organ-content-section active" id="sect-heart">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Heart Attack -->
+                        <div class="condition-card">
+                            <h4>Heart Attack (Myocardial Infarction)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Crushing chest pain or pressure, shortness of breath, radiating pain in the left arm, neck, jaw, or back, cold sweats, and severe dizziness.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Rupture of a cholesterol plaque in a coronary artery, triggering a blood clot that completely blocks oxygenated blood from reaching the heart muscle.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Strictly manage blood pressure, avoid trans-fats, exercise moderately, and immediately seek emergency care if chest pain lasts more than 5 minutes.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Medical Emergency.</strong> Reversible if treated immediately. Revascularization via emergency balloon angioplasty (stenting) or thrombolytic drugs (clot-busters) to restore blood flow.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CAD -->
+                        <div class="condition-card">
+                            <h4>Coronary Artery Disease (CAD)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Chest pain (stable angina) during exertion, shortness of breath, and fatigue.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Gradual cholesterol plaque accumulation (atherosclerosis) narrowing the coronary arteries.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Low-sodium diet, regular aerobic exercise, and cholesterol-lowering therapies.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Manageable.</strong> Treated with beta-blockers, statins, aspirin, and lifestyle shifts. Advanced cases require coronary bypass surgery (CABG).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heart Failure -->
+                        <div class="condition-card">
+                            <h4>Congestive Heart Failure (CHF)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Chronic fatigue, fluid accumulation in the legs and ankles (edema), shortness of breath when lying flat, and dry cough.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Weakening or stiffening of the heart muscle due to long-term high blood pressure, CAD, or past heart attacks.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Strictly limit sodium and daily fluid intake, monitor weight daily, and avoid NSAID pain relievers.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>No Cure (Highly Manageable).</strong> Controlled via ACE inhibitors, diuretics to remove fluid, beta-blockers, pacemakers (CRT), or heart transplantation.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Heart Care)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Hawthorn Berry Extract</strong>
+                                <p>Widely researched in cardiology to improve coronary blood flow, strengthen myocardial contractions, and regulate mild blood pressure.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Organic Garlic (Allicin)</strong>
+                                <p>Helps prevent blood clotting, reduces arterial plaque accumulation, and naturally lowers LDL cholesterol levels when consumed raw daily.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Coenzyme Q10 (CoQ10)</strong>
+                                <p>An essential enzyme found naturally in spinach and broccoli that fuels cellular energy production in the heart muscle and acts as a powerful antioxidant.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: These natural remedies are curated to support cardiovascular function. While highly beneficial, they should not replace emergency medical interventions or prescribed beta-blockers.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Cardiovascular Scan Visualization</h4>
+                        <div class="visual-container">
+                            <img src="assets/heart.png" alt="Futuristic Heart Scan Illustration">
+                        </div>
+                        <p class="body-sm">Visualizing coronary arterial density and myocardial blood flow. High-tech diagnostic overlay.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KIDNEYS SECTION -->
+            <div class="organ-content-section" id="sect-kidney">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Kidney Stones -->
+                        <div class="condition-card">
+                            <h4>Kidney Stones (Nephrolithiasis)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Severe pain in the back and side, radiating to the groin, blood in urine (hematuria), painful urination, and nausea.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Mineral and acid salts in concentrated urine crystallize and bind together, often due to dehydration or high sodium intake.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Drink 3+ liters of water daily, reduce dietary sodium, limit animal protein, and monitor urinary pH.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Fully Curable.</strong> Small stones pass with hydration and alpha-blockers. Large stones are cured using extracorporeal shock wave lithotripsy (ESWL) or laser ureteroscopy.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CKD -->
+                        <div class="condition-card">
+                            <h4>Chronic Kidney Disease (CKD)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Uremic frost, swollen ankles/feet (fluid retention), anemia, fatigue, and metallic taste in the mouth.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Persistent glomerular damage caused by uncontrolled Type 2 Diabetes or chronic hypertension.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Maintain blood pressure below 130/80, manage glucose levels, limit protein intake, and avoid NSAIDs.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Irreversible.</strong> Progresses through 5 stages. Managed with blood pressure control (ACE inhibitors) and dietary shifts. Stage 5 requires hemodialysis or kidney transplant.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Glomerulonephritis -->
+                        <div class="condition-card">
+                            <h4>Glomerulonephritis (Kidney Inflammation)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Pink or dark cola-colored urine (blood in urine), foamy urine due to excess protein (proteinuria), and high blood pressure.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Immune response triggers, such as post-streptococcal infection, lupus, or vasculitis, causing inflammation in the glomeruli.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Treat streptococcal throat infections immediately with antibiotics, and reduce dietary sodium/potassium.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Curable depending on cause.</strong> Treated with corticosteroids to suppress immune inflammation, immunosuppressants, and blood pressure control.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Kidney Care)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Fresh Lemon Juice & Olive Oil</strong>
+                                <p>Citric acid in lemons binds with calcium to prevent stone formation and break down small crystals, while olive oil lubricates the urinary tract to ease passage.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Dandelion Root Tea</strong>
+                                <p>Acts as an organic diuretic, promoting increased urine production to flush out accumulated toxins and excess uric acid from the kidneys.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Pure Cranberry Extract</strong>
+                                <p>Prevents bacteria from adhering to the bladder and renal walls, reducing the incidence of urinary tract infections that can lead to kidney stones.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: Natural diuretics are highly effective for flushing stones and reducing inflammation. Ensure adequate hydration during detox.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Renal Ultrasound Scan</h4>
+                        <div class="visual-container">
+                            <img src="assets/kidney.png" alt="Futuristic Kidney Scan Illustration">
+                        </div>
+                        <p class="body-sm">Ultrasonic imaging of the renal cortex and calyces. Monitoring for nephrolithiasis and fluid retention.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EYES SECTION -->
+            <div class="organ-content-section" id="sect-eyes">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Glaucoma -->
+                        <div class="condition-card">
+                            <h4>Glaucoma</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Loss of peripheral vision (tunnel vision), severe eye pain, blurred vision, and seeing halos around lights.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Increased fluid pressure in the eye (intraocular pressure) damaging the optic nerve fibers.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Avoid rubbing eyes, limit caffeine, sleep with head slightly elevated, and get regular pressure checks.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Manageable (Irreversible).</strong> Vision loss cannot be cured. Eye pressure is lowered and managed using prescription drops, laser trabeculoplasty, or shunt surgery.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cataracts -->
+                        <div class="condition-card">
+                            <h4>Cataracts</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Cloudy or blurry vision, faded color perception, double vision in a single eye, and difficulty seeing at night.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Protein clumping in the eye's lens due to aging, UV exposure, smoking, or diabetes.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Wear UV-blocking sunglasses, quit smoking, and maintain optimal blood glucose levels.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Fully Curable.</strong> Cured via outpatient surgery where the cloudy lens is removed and replaced with a clear artificial intraocular lens (IOL).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Macular Degeneration -->
+                        <div class="condition-card">
+                            <h4>Age-Related Macular Degeneration (AMD)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Gradual loss of central vision, straight lines appearing wavy or distorted, and difficulty recognizing faces.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Aging-related breakdown of cells in the macula (retina) or abnormal blood vessel growth under the retina (wet AMD).</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Eat a diet rich in leafy greens, avoid smoking, wear sunglasses, and supplement with AREDS2 vitamins.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Manageable.</strong> Dry AMD has no cure but is slowed by vitamins. Wet AMD is managed and partially reversed using anti-VEGF eye injections.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Vision Support)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Lutein & Zeaxanthin (Marigold Extract)</strong>
+                                <p>Essential carotenoids that accumulate in the retina, acting as natural blue-light filters and protecting the optic nerve from oxidative stress.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Bilberry Extract (Anthocyanins)</strong>
+                                <p>Improves microcapillary circulation in the eyes, enhancing night vision and reducing macular degeneration risks.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: Natural antioxidants support retinal health but cannot cure advanced cataracts or glaucoma. Always pair with professional pressure monitoring.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Retinal Fundus Scan</h4>
+                        <div class="visual-container">
+                            <!-- SVG Retina Scan -->
+                            <svg viewBox="0 0 200 200" style="width:100%; height:100%; background:#020b14;">
+                                <circle cx="100" cy="100" r="80" stroke="rgba(161,251,0,0.3)" stroke-width="2" fill="none"/>
+                                <circle cx="100" cy="100" r="70" stroke="rgba(161,251,0,0.1)" stroke-width="1" fill="none"/>
+                                <circle cx="130" cy="100" r="15" fill="#facc15" opacity="0.4" filter="blur(2px)"/>
+                                <path d="M 130 100 Q 110 80 80 60 Q 50 40 30 50 M 130 100 Q 100 110 70 120 Q 40 130 25 100 M 130 100 Q 140 130 160 150 M 130 100 Q 150 70 180 50" stroke="#ef4444" stroke-width="1.5" fill="none" opacity="0.75" />
+                                <circle cx="100" cy="100" r="3" fill="var(--accent-color)" />
+                            </svg>
+                        </div>
+                        <p class="body-sm">Fundus visualization mapping cup-to-disc ratio and vascular branches. Optic nerve check.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LUNGS SECTION -->
+            <div class="organ-content-section" id="sect-lungs">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Pneumonia -->
+                        <div class="condition-card">
+                            <h4>Pneumonia</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Chest pain when breathing/coughing, fever, chills, coughing up thick phlegm, and shortness of breath.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Bacterial, viral, or fungal infection inflating the lung air sacs (alveoli) with fluid or pus.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Get pneumococcal and flu vaccines, wash hands frequently, avoid smoking, and maintain high respiratory hygiene.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Fully Curable.</strong> Cured using antibiotics (e.g. Azithromycin) for bacterial infections, or antivirals. Supported by hydration, rest, and fever management.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Asthma -->
+                        <div class="condition-card">
+                            <h4>Bronchial Asthma</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Wheezing, shortness of breath, chest tightness, and coughing (particularly at night or during exercise).</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Chronic airway inflammation and hypersensitivity to environmental triggers (allergens, smoke, cold air).</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Identify and avoid triggers, keep a rescue inhaler close, and monitor peak expiratory flow.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Manageable (No permanent cure).</strong> Controlled with daily inhaled corticosteroids (preventers) and short-acting beta-agonists (Albuterol rescue inhalers).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COPD -->
+                        <div class="condition-card">
+                            <h4>COPD (Chronic Obstructive Pulmonary Disease)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Progressive shortness of breath, chronic cough with mucus (smoker's cough), and frequent chest infections.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Long-term exposure to lung irritants, most commonly tobacco smoke, causing emphysema and chronic bronchitis.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Quit smoking immediately, avoid second-hand smoke, and get annual flu/pneumonia vaccinations.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>No Cure (Progressive).</strong> Managed with long-acting bronchodilators, inhaled steroids, pulmonary rehabilitation, and supplemental oxygen therapy.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Respiratory Support)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Eucalyptus Oil Inhalation</strong>
+                                <p>Eucalyptol acts as a powerful natural expectorant, breaking down thick mucus in the bronchial tubes and relaxing airways during steam inhalation.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Thyme & Honey Tea</strong>
+                                <p>Thyme contains thymol, a volatile oil with strong antibacterial properties that relieves chest spasms, while honey coats the throat to soothe coughing.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: Herbal steam and expectorants are excellent supportive therapies to clear congestion. Severe bacterial pneumonia requires antibiotic intervention.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Lung X-Ray Scan</h4>
+                        <div class="visual-container">
+                            <!-- SVG Chest X-Ray -->
+                            <svg viewBox="0 0 200 200" style="width:100%; height:100%; background:#020b14;">
+                                <path d="M60 40 C60 40 40 60 40 100 C40 140 60 160 80 160 C80 160 85 130 85 100 C85 70 80 40 80 40 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(161,251,0,0.3)" stroke-width="1.5"/>
+                                <path d="M140 40 C140 40 160 60 160 100 C160 140 140 160 120 160 C120 160 115 130 115 100 C115 70 120 40 120 40 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(161,251,0,0.3)" stroke-width="1.5"/>
+                                <path d="M100 30 L100 170" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="4,4"/>
+                                <path d="M45 45 Q100 55 155 45" stroke="rgba(255,255,255,0.15)" stroke-width="3" fill="none"/>
+                                <path d="M40 70 Q70 75 85 70 M160 70 Q130 75 115 70 M40 100 Q70 105 85 100 M160 100 Q130 105 115 100 M45 130 Q70 135 80 130 M155 130 Q130 135 120 130" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <p class="body-sm">Chest radiograph visualization. Assessing pleural cavity, bronchial density, and infiltration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BRAIN SECTION -->
+            <div class="organ-content-section" id="sect-brain">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Stroke -->
+                        <div class="condition-card">
+                            <h4>Stroke (Cerebrovascular Accident)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Sudden numbness or weakness in the face/arm/leg, difficulty speaking or understanding, confusion, and loss of coordination.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Blocked artery cutting off blood (Ischemic Stroke) or a ruptured blood vessel causing bleeding in the brain (Hemorrhagic Stroke).</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Manage hypertension, lower cholesterol, control blood glucose, avoid high-stress triggers, and take anticoagulants if prescribed.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Time-Critical Emergency.</strong> Ischemic stroke is treated/reversed using tissue plasminogen activator (tPA) within 4.5 hours, or mechanical thrombectomy. Physical therapy is vital for neurological recovery.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alzheimer's -->
+                        <div class="condition-card">
+                            <h4>Alzheimer's Disease</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Progressive memory loss, disorientation, difficulty performing familiar tasks, and changes in mood and personality.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Abnormal build-up of amyloid plaques and neurofibrillary tau tangles, causing progressive death of brain neurons.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Engage in cognitive training, maintain a Mediterranean diet, exercise regularly, and manage cardiovascular risk factors.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>No Cure (Progressive).</strong> Managed with cholinesterase inhibitors (Donepezil) and NMDA antagonists. Monoclonal antibodies (e.g., Leqembi) are used to slow cognitive decline in early stages.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Parkinson's -->
+                        <div class="condition-card">
+                            <h4>Parkinson's Disease</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Resting tremors (pill-rolling), muscle rigidity, slow movements (bradykinesia), and impaired posture/balance.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Loss of dopamine-producing neurons in the substantia nigra region of the brain.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Stay physically active, avoid exposure to pesticides, and practice speech and balance exercises.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>No Cure (Manageable).</strong> Symptoms are managed with dopamine replacement therapy (Levodopa/Carbidopa) and dopamine agonists. Deep Brain Stimulation (DBS) is used for advanced motor symptoms.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Neuro-Protection)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Ginkgo Biloba & Gotu Kola</strong>
+                                <p>Herbs that promote microcirculation in cerebral capillaries, improving oxygen delivery to brain cells and supporting cognitive recovery.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Turmeric (Curcumin)</strong>
+                                <p>A highly bioavailable anti-inflammatory that crosses the blood-brain barrier, reducing neuroinflammation and protecting neurons from oxidative damage.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: Cognitive and circulatory supplements support brain recovery. Acute stroke symptoms require immediate emergency medical care (Call 911).
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Brain CT Scan</h4>
+                        <div class="visual-container">
+                            <!-- SVG Brain Scan -->
+                            <svg viewBox="0 0 200 200" style="width:100%; height:100%; background:#020b14;">
+                                <ellipse cx="100" cy="100" rx="60" ry="75" stroke="rgba(161,251,0,0.3)" stroke-width="2" fill="none"/>
+                                <path d="M100 25 C100 25 70 40 70 100 C70 160 100 175 100 175 C100 175 130 160 130 100 C130 40 100 25 100 25 Z" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                                <path d="M90 85 Q100 70 110 85 Q100 100 90 85 Z" fill="rgba(161,251,0,0.15)" stroke="var(--accent-color)" stroke-width="1.5" />
+                                <path d="M92 110 Q100 100 108 110 Q100 120 92 110 Z" fill="rgba(161,251,0,0.15)" stroke="var(--accent-color)" stroke-width="1.5" />
+                                <path d="M50 70 Q70 80 90 75 M150 70 Q130 80 110 75 M45 100 Q70 100 90 95 M155 100 Q130 100 110 95 M50 130 Q70 120 90 125 M150 130 Q130 120 110 125" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none"/>
+                            </svg>
+                        </div>
+                        <p class="body-sm">Transaxial CT slice. Mapping ventricular structures, cerebral hemispheres, and ischemic zones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVER SECTION -->
+            <div class="organ-content-section" id="sect-liver">
+                <div class="condition-layout">
+                    <!-- Left: Clinical Cards -->
+                    <div>
+                        <!-- Fatty Liver -->
+                        <div class="condition-card">
+                            <h4>Fatty Liver Disease (NAFLD)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Usually asymptomatic in early stages. Can cause fatigue, mild discomfort in the upper right abdomen, and elevated liver enzymes.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Excessive fat accumulation in hepatocytes, strongly linked to obesity, insulin resistance, and high triglycerides.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Eliminate high-fructose corn syrup, reduce intake of simple carbohydrates, avoid alcohol entirely, and limit hepatotoxic drugs.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Fully Reversible (Curable).</strong> The primary cure is gradual weight loss (7-10% of body weight) through calorie restriction and physical exercise. There are no approved medications; lifestyle modification is the definitive cure.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hepatitis -->
+                        <div class="condition-card">
+                            <h4>Viral Hepatitis (Hepatitis B & C)</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Jaundice (yellowing of skin and eyes), dark urine, extreme fatigue, nausea, and abdominal discomfort in the upper right quadrant.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Infection by Hepatitis B (HBV) or Hepatitis C (HCV) viruses, causing acute or chronic hepatic inflammation.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Receive HBV vaccination, avoid sharing needles/razors, and practice safe sex.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Hepatitis C is Curable.</strong> Cured in 95%+ of cases using 8-12 weeks of Direct-Acting Antiviral (DAA) tablets. Hepatitis B is manageable but not curable; controlled with long-term antivirals.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cirrhosis -->
+                        <div class="condition-card">
+                            <h4>Liver Cirrhosis</h4>
+                            <div class="details-grid">
+                                <div class="details-block">
+                                    <h5>Symptoms</h5>
+                                    <p>Easy bruising/bleeding, fluid accumulation in the abdomen (ascites), confusion (hepatic encephalopathy), and jaundice.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Causes</h5>
+                                    <p>Late-stage scarring (fibrosis) of the liver caused by long-term alcohol abuse, chronic hepatitis, or advanced NAFLD.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Precautions</h5>
+                                    <p>Strictly avoid alcohol, manage underlying viral hepatitis, and maintain a low-sodium diet to prevent ascites.</p>
+                                </div>
+                                <div class="details-block">
+                                    <h5>Cure & Treatment</h5>
+                                    <p><strong>Irreversible.</strong> Scar tissue cannot be undone. Treatment focuses on stopping progression (stopping alcohol, antivirals). End-stage cirrhosis is cured only via a liver transplant.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Natural Remedies Card -->
+                        <div class="natural-remedies-card">
+                            <h4>
+                                <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                                Curated Natural Remedies (Hepatoprotective)
+                            </h4>
+                            <div class="remedy-item">
+                                <strong>Milk Thistle (Silymarin)</strong>
+                                <p>A clinically backed herb that stabilizes hepatocyte membranes, stimulates protein synthesis for liver regeneration, and reduces lipid peroxidation.</p>
+                            </div>
+                            <div class="remedy-item">
+                                <strong>Organic Apple Cider Vinegar (ACV)</strong>
+                                <p>Helps metabolize fats stored in the liver and improves insulin sensitivity when taken (1 tbsp in warm water) before meals.</p>
+                            </div>
+                            <div class="responsibility-note">
+                                **Clinical Responsibility Statement**: Milk Thistle and dietary acids are powerful aids for liver detox. They must be combined with a low-glycemic diet for complete reversal of fatty liver.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Visual Scan Card -->
+                    <div class="visual-card">
+                        <h4 style="font-size: 16px; margin-bottom: 0;">Hepatic Ultrasound Scan</h4>
+                        <div class="visual-container">
+                            <!-- SVG Liver -->
+                            <svg viewBox="0 0 200 200" style="width:100%; height:100%; background:#020b14;">
+                                <path d="M40 80 C40 80 80 50 130 60 C180 70 170 120 150 140 C130 160 60 160 45 130 C30 100 40 80 40 80 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(161,251,0,0.3)" stroke-width="1.5" />
+                                <path d="M120 140 Q130 155 125 160 Q115 160 110 145 Z" fill="#10b981" opacity="0.3" stroke="#10b981" stroke-width="1"/>
+                                <path d="M90 150 Q100 120 95 100 M95 100 Q80 90 70 85 M95 100 Q110 90 120 80" stroke="#60a5fa" stroke-width="2.5" fill="none" opacity="0.6"/>
+                            </svg>
+                        </div>
+                        <p class="body-sm">Abdominal sonography. Measuring liver echo-texture, portal vein flow, and gallbladder patency.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
