@@ -994,19 +994,13 @@ function initConsultationPage() {
    ========================================== */
 const planPrices = {
     monthly: {
-        usd: { basic: "$9", pro: "$29", elite: "$79" },
-        inr: { basic: "₹799", pro: "₹2,499", elite: "₹6,999" },
-        jpy: { basic: "¥1,200", pro: "¥4,200", elite: "¥11,500" }
+        inr: { basic: "₹799", pro: "₹2,499", elite: "₹6,999" }
     },
     quarterly: {
-        usd: { basic: "$24", pro: "$74", elite: "$199" },
-        inr: { basic: "₹1,999", pro: "₹6,499", elite: "₹17,999" },
-        jpy: { basic: "¥3,200", pro: "¥10,500", elite: "¥29,000" }
+        inr: { basic: "₹1,999", pro: "₹6,499", elite: "₹17,999" }
     },
     yearly: {
-        usd: { basic: "$79", pro: "$239", elite: "$639" },
-        inr: { basic: "₹6,499", pro: "₹19,999", elite: "₹54,999" },
-        jpy: { basic: "¥11,000", pro: "¥34,000", elite: "¥92,000" }
+        inr: { basic: "₹6,499", pro: "₹19,999", elite: "₹54,999" }
     }
 };
 
