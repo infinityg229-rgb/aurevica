@@ -1431,7 +1431,7 @@ function initHealthTrackerPage() {
                 }
                 return res.json();
             })
-            .then(async data => {
+            .then(data => {
                 noteText.innerHTML = formatMarkdown(data.reply);
                 
                 // Save check-in & cloud sync
