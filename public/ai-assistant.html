@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Clinical Assistant - Aurevica Lumina</title>
+    <meta name="description" content="Use Aurevica Lumina's conversational AI assistant to check symptoms, analyze potential diseases in any language, and generate personalized diet plans.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4.5 10.5C4.5 6.35817 7.85817 3 12 3C16.1418 3 19.5 6.35817 19.5 10.5V14.25C19.5 17.9779 16.4779 21 12.75 21H11.25C7.52208 21 4.5 17.9779 4.5 14.25V10.5Z" />
+                    <path d="M9 10H15M12 7V13" />
+                </svg>                Aurevica            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai-assistant.html" class="active">AI Assistant</a></li>
+                <li><a href="health-tracker.html">Tracker</a></li>
+                <li><a href="medical-knowledge.html">Diseases</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="organ-health.html">Organ Health</a></li>
+                <li><a href="pharmacy.html">Medications</a></li>
+                <li><a href="speech-therapy.html">Speech Therapy</a></li>
+                <li><a href="consultation.html">Consultation</a></li>
+                <li><a href="report-analysis.html">Report Analysis</a></li>
+                <li><a href="pricing.html">Plans</a></li>
+                <li><a href="login.html" class="nav-btn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="chat-layout">
+        <!-- Chat Sidebar -->
+        <aside class="chat-sidebar" style="display: flex; flex-direction: column;">
+            <div class="chat-sidebar-title">Clinical AI Modules</div>
+            <div class="chat-modes" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <button class="chat-mode-btn active" data-mode="symptoms" id="symptoms-mode-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Symptom Checker
+                </button>
+                <button class="chat-mode-btn" data-mode="diet" id="diet-mode-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.17 19.62 10.53 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                    AI Diet Planner
+                </button>
+                <button class="chat-mode-btn" data-mode="journal" id="journal-mode-btn">
+                    <svg viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    AI Reflective Journal
+                </button>
+                <button class="chat-mode-btn" data-mode="planner" id="planner-mode-btn">
+                    <svg viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    AI Wellness Planner
+                </button>
+            </div>
+            
+            <div style="margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                <!-- AI Memory Toggle -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: var(--surface-container-high); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <label for="memory-toggle" style="font-size: 0.8rem; font-weight: 600; color: var(--text-main); cursor: pointer;">AI Memory System</label>
+                    <input type="checkbox" id="memory-toggle" style="accent-color: var(--accent-color); cursor: pointer;">
+                </div>
+                
+                <div>
+                    <label for="lang-select" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Preferred Language</label>
+                    <select id="lang-select" class="lang-select" style="width: 100%; margin-bottom: 1rem;">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="es">Español (Spanish)</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                    </select>
+                    
+                    <label for="api-key-input" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Local Gemini API Key</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="password" id="api-key-input" class="form-input" style="font-size: 0.8rem; padding: 0.4rem; background: var(--surface-container-high); color: var(--text-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); width: 100%;" placeholder="AIzaSy...">
+                        <button id="save-key-btn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; white-space: nowrap;">Save</button>
+                    </div>
+                    <span id="key-status" style="font-size: 0.7rem; color: var(--secondary-color); margin-top: 0.25rem; display: block;"></span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Chat Container -->
+        <section class="chat-container" style="display: flex; flex-direction: column; height: 100%;">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="chat-avatar">
+                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    </div>
+                    <div class="chat-title">
+                        <h3 id="chat-header-title">Aurevica Lumina Clinical AI</h3>
+                        <p id="chat-header-subtitle">Active Diagnostic Node</p>
+                    </div>
+                </div>
+                <div>
+                    <span style="font-size: 0.8rem; background-color: var(--secondary-light); color: var(--secondary-color); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600;">HIPAA Compliant</span>
+                </div>
+            </div>
+
+            <!-- Messages Area (Chat Mode) -->
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be injected dynamically via JS -->
+            </div>
+
+            <!-- Input Area (Chat Mode) -->
+            <div class="chat-input-area" id="chat-input-area" style="position: relative; display: flex; align-items: center; gap: 0.5rem;">
+                <button id="chat-mic-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.5rem; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast);" aria-label="Start voice input">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </button>
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your symptoms (e.g. 'I have a fever and headache')..." aria-label="Symptom or diet query" style="flex: 1;">
+                <button id="chat-send-btn" class="chat-send-btn" aria-label="Send message">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+
+            <!-- Journal Area -->
+            <div id="journal-container" style="display: none; flex-direction: column; flex-grow: 1; padding: 1.5rem; overflow-y: auto; gap: 1.5rem;">
+                <div class="card" style="background: var(--surface-container-high); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 1rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">AI-Powered Reflective Journal</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Write down your thoughts, feelings, or how your day went. Our AI will analyze your mood, identify behavioral patterns, and suggest mindful next steps.</p>
+                    <textarea id="journal-entry-input" class="form-input" style="width: 100%; min-height: 150px; font-size: 0.9rem; padding: 1rem; resize: vertical; color: var(--text-main); background: var(--surface-container-low); border: 1px solid var(--border-color);" placeholder="Today I felt..."></textarea>
+                    <button id="analyze-journal-btn" class="btn btn-primary" style="align-self: flex-start; padding: 0.75rem 1.5rem; border-radius: var(--radius-md); font-size: 0.85rem;">Analyze Entry</button>
+                </div>
+                
+                <!-- Journal Analysis Result -->
+                <div id="journal-analysis-result" style="display: none; background: var(--surface-container); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; animation: fadeIn 0.4s ease-out; display: flex; flex-direction: column; gap: 1.25rem;">
+                    <!-- Content will be injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Wellness Planner Area -->
+            <div id="planner-container" style="display: none; flex-direction: column; flex-grow: 1; padding: 1.5rem; overflow-y: auto; gap: 1.5rem;">
+                <div class="card" style="background: var(--surface-container-high); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-xl); display: flex; flex-direction: column; gap: 1.25rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">AI Personal Wellness Planner</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Define your goals, routine, and lifestyle. The AI will design a personalized, highly actionable daily and weekly wellness plan.</p>
+                    
+                    <form id="planner-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="form-group" style="margin: 0;">
+                            <label for="planner-goal" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Primary Goal</label>
+                            <input type="text" id="planner-goal" class="form-input" style="font-size: 0.85rem; background: var(--surface-container-low); border: 1px solid var(--border-color);" placeholder="e.g. Reduce stress, improve sleep quality, build consistent habits" required>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label for="planner-lifestyle" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Lifestyle & Job</label>
+                            <input type="text" id="planner-lifestyle" class="form-input" style="font-size: 0.85rem; background: var(--surface-container-low); border: 1px solid var(--border-color);" placeholder="e.g. Sedentary software developer, highly active student" required>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label for="planner-routine" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Current Daily Routine</label>
+                            <textarea id="planner-routine" class="form-input" style="font-size: 0.85rem; min-height: 80px; background: var(--surface-container-low); border: 1px solid var(--border-color);" placeholder="e.g. Wake up at 8am, coffee, sit at desk, sleep around 12am" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="align-self: flex-start; padding: 0.75rem 1.5rem; border-radius: var(--radius-md); font-size: 0.85rem;">Generate Wellness Plan</button>
+                    </form>
+                </div>
+
+                <!-- Wellness Plan Result -->
+                <div id="planner-result" style="display: none; background: var(--surface-container); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; animation: fadeIn 0.4s ease-out;">
+                    <!-- Content will be injected dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>
