@@ -1431,13 +1431,9 @@ function initHealthTrackerPage() {
                 }
                 return res.json();
             })
-            .then(data => {
+            .then(async data => {
                 noteText.innerHTML = formatMarkdown(data.reply);
-                
-                // Save check-in & cloud sync
                 await saveMoodCheckin(mood, data.reply);
-                
-                // Re-render
                 renderMoodHistoryAndChart();
                 
                 // Re-enable
